@@ -1,0 +1,20 @@
+<div class="tabbable">
+    <ul class="nav nav-tabs" id="texttabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Cipher Text</a></li>
+        <li><a href="#tab2" data-toggle="tab">Decrypted Text</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <p><pre>{{ ciphertext }}</pre></p>
+        </div>
+        <div class="tab-pane" id="tab2">
+            <p><pre>{{ cleartext }}</pre></p>
+        </div>
+    </div>
+</div>
+<script>
+    $('#texttabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+</script>
