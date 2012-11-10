@@ -44,6 +44,11 @@ class MainHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('index.html')
         self.response.out.write(template.render(getTemplateValues()))
 
+class LevelHandler(webapp2.RequestHandler):
+	  def get(self):
+	    	template = jinja_environment.get_template('level.html')
+	    	self.response.out.write(template.render(getTemplateValues()))
+
 class AnalysisPaneHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_environment.get_template('analysis.html')
@@ -56,6 +61,7 @@ class TextsPaneHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/level', LevelHandler),
     ('/analysis', AnalysisPaneHandler),
     ('/texts', TextsPaneHandler),
 ], debug=True)
