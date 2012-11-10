@@ -1,3 +1,5 @@
+# use glob syntax.
+syntax: glob
 *.swp
 *.pyc
 bootstrap*.zip
