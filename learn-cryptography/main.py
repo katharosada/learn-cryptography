@@ -59,9 +59,15 @@ class TextsPaneHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('texts.html')
         self.response.out.write(template.render(getTemplateValues()))
 
+class DecryptorsPaneHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_environment.get_template('decryptors.html')
+        self.response.out.write(template.render(getTemplateValues()))
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/level', LevelHandler),
     ('/analysis', AnalysisPaneHandler),
     ('/texts', TextsPaneHandler),
+    ('/decryptors', DecryptorsPaneHandler),
 ], debug=True)
