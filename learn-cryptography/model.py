@@ -18,7 +18,8 @@ class LevelSequence(ndb.Model):
 
 class Text(ndb.Model):
     name = ndb.StringProperty()
-    contet = ndb.TextProperty()
+    content = ndb.TextProperty()
+    encrypted = ndb.TextProperty()
 
 class LevelList(ndb.Model):
     levels = ndb.KeyProperty(repeated=True)

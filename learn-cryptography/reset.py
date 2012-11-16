@@ -39,9 +39,11 @@ def resetTexts():
     text = key.get()
     if not text:
         text = model.Text(key=key)
-        text.name = "Caesar Cipher Wikipedia Text"
-        text.content = CIPHER_TEXT
-        text.put()
+    text.name = "Caesar Cipher Wikipedia Text"
+    ct = CIPHER_TEXT.encode('ascii','ignore')
+    text.content = ct
+    text.encrypted = ct.encode('rot13')
+    text.put()
 
 def resetAllTheThings():
     global default_levels

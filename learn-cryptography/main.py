@@ -4,6 +4,7 @@ import os
 import jinja2
 
 import model
+import decrypt
 from google.appengine.ext import ndb
 
 jinja_environment = jinja2.Environment(autoescape=True,
@@ -20,7 +21,12 @@ class LevelHandler(webapp2.RequestHandler):
     def get(self):
         urlstring = self.request.get('level')
         level_key = ndb.Key(urlsafe=urlstring)
-        values = {'level':level_key.get()}
+        level = level_key.get()
+        text = level.text.get()
+        values = {
+                'level':level,
+                'text':text,
+                }
         template = jinja_environment.get_template('level.html')
         self.response.out.write(template.render(values))
 
@@ -39,10 +45,19 @@ class DecryptorsPaneHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('decryptors.html')
         self.response.out.write(template.render({}))
 
+class DecryptHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.out.write("GET was called")
+
+    def post(self):
+        rotate = self.request.get('rotate')
+        self.response.out.write("POST was called %s " % rotate)
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/level', LevelHandler),
     ('/analysis', AnalysisPaneHandler),
     ('/texts', TextsPaneHandler),
     ('/decryptors', DecryptorsPaneHandler),
+    ('/decrypt', decrypt.DecryptHandler),
 ], debug=True)

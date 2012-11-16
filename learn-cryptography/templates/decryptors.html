@@ -1,3 +1,21 @@
 <p>
-    This is the decryptor tab...
+    <form onsubmit="decrypt(); return false" id="rotate_decryptor">
+        <select name="rotate">
+            {% for i in range(26) %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Decrypt">
+    </form>            
+    <script>
+        decrypt = function() {
+            var jqxhr = $.post('/decrypt', {
+                    "rotate":
+                    $("#rotate_decryptor select option:selected").val()}
+                , function(data) {
+                $('#decrypted pre').text(data);
+            })
+            .error(function() { alert("error"); })
+        }
+    </script>
 </p>
