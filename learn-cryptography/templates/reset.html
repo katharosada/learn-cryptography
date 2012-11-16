@@ -5,11 +5,24 @@
 
     <!-- Main hero unit for a primary marketing message or call to action -->
     <div class="hero-unit">
-        <h1>Hello, world!</h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p>
-            <a href="/level?level={{ start_id }}">Get started</a>
-        </p>
+        <h1>Reset ALL the things</h1>
+        <p>You have (presumably) successfully reset the database. Congratulations.</p>
+        <h3>Level list</h3>
+        <p>{{ level_list }}</p>
+        <h3>Levels deleted</h3>
+        <ul>
+            {% for level in levels %}
+            <li>{{ level }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>New levels</h3>
+        <ul>
+            {% for result in results %}
+            <li>{{ result }} has key {{ results[result] }}</li >
+            {% endfor %}
+        </ul>
+
     </div>
 
     <!-- Example row of columns -->
