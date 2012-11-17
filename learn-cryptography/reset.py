@@ -67,7 +67,7 @@ def resetAllTheThings():
 
     level1 = getOrCreateLevel(l1key)
     level1.name = "Julius Caesar"
-    level1.startstory = "There was totally this Julius Caesar guy"
+    level1.startstory = open('texts/start/caesar.txt', 'rU').read()
     level1.endstory = "And you cracked it! Caesar is annoyed."
     level1.text = ndb.Key(model.Text, 'caesar')
     key = level1.put()
