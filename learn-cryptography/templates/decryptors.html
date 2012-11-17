@@ -2,7 +2,7 @@
     <form onsubmit="decrypt(); return false" id="rotate_decryptor">
         <select name="rotate">
             {% for i in range(26) %}
-                <option value="{{ i }}">{{ i }}</option>
+            <option value="{{ i }}">{{ i }} ({{ i - 26}})</option>
             {% endfor %}
         </select>
         <input type="submit" value="Decrypt">
@@ -14,6 +14,7 @@
                     $("#rotate_decryptor select option:selected").val()}
                 , function(data) {
                 $('#decrypted pre').text(data);
+                $('#texttabs a[href="#decrypted"]').tab('show');
             })
             .error(function() { alert("error"); })
         }
