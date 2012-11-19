@@ -1,6 +1,6 @@
 <div class="tabbable">
     <ul class="nav nav-tabs" id="texttabs">
-        <li class="active"><a href="#encrypted" data-toggle="tab">Cipher Text</a></li>
+        <li class="active"><a href="#encrypted" data-toggle="tab">Encrypted Text</a></li>
         <li><a href="#decrypted" data-toggle="tab">Decrypted Text</a></li>
     </ul>
     <div class="tab-content">
@@ -8,6 +8,7 @@
             <pre>{{ text.encrypted }}</pre>
         </div>
         <div class="tab-pane" id="decrypted">
+            <div class="alert alert-success">Woo!</div>
             <pre>{{ cleartext }}</pre>
         </div>
     </div>

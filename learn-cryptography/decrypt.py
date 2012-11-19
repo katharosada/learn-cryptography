@@ -1,5 +1,6 @@
 import webapp2
 import model
+import json
 from google.appengine.ext import ndb
 
 import string
@@ -15,6 +16,12 @@ def rotate(text, rot):
     text = text.encode('ascii', 'ignore').strip()
     return make_rot_n(rot)(text)
 
+def check_result(text_key, text):
+    key = ndb.Key(model.Text, text_key)
+    if text.strip() == key.get().content.strip():
+        return True
+    return False
+
 class DecryptHandler(webapp2.RequestHandler):
     def get(self):
         self.response.out.write("GET was called")
@@ -24,5 +31,7 @@ class DecryptHandler(webapp2.RequestHandler):
         text_key = self.request.get('text')
         text_key = "caesar"
         text = ndb.Key(model.Text, text_key).get()
-        self.response.out.write(rotate(text.encrypted, rot))
+        decrypted = rotate(text.encrypted, rot)
+        self.response.out.write(
+                json.dumps({'win':check_result('caesar', decrypted), 'text':decrypted}))
 

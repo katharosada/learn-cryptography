@@ -8,15 +8,19 @@
         <input type="submit" value="Decrypt">
     </form>            
     <script>
+        pasteText = function(data) {
+            var d = window.JSON.parse(data);
+            alert(d.win);
+            $('#decrypted pre').text(d.text);
+            $('#texttabs a[href="#decrypted"]').tab('show');
+        };
+
         decrypt = function() {
-            var jqxhr = $.post('/decrypt', {
-                    "rotate":
-                    $("#rotate_decryptor select option:selected").val()}
-                , function(data) {
-                $('#decrypted pre').text(data);
-                $('#texttabs a[href="#decrypted"]').tab('show');
-            })
-            .error(function() { alert("error"); })
+            var jqxhr = $.post(
+                '/decrypt', 
+                {"rotate":$("#rotate_decryptor select option:selected").val()},
+                pasteText
+            ).error(function() { alert("error"); })
         }
     </script>
 </p>
