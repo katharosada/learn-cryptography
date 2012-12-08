@@ -13,6 +13,7 @@ In 2011, Rajib Karim was convicted in the United Kingdom of "terrorism offences"
 """
 
 import model
+import decrypt
 
 from google.appengine.ext import ndb
 
@@ -42,7 +43,7 @@ def resetTexts():
     text.name = "Caesar Cipher Wikipedia Text"
     ct = CIPHER_TEXT.encode('ascii','ignore')
     text.content = ct
-    text.encrypted = ct.encode('rot13')
+    text.encrypted = decrypt.getEncrypter('caesar')(ct)
     text.put()
 
 def resetAllTheThings():

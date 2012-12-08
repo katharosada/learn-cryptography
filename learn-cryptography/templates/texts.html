@@ -8,7 +8,7 @@
             <pre>{{ text.encrypted }}</pre>
         </div>
         <div class="tab-pane" id="decrypted">
-            <div class="alert alert-success">Woo!</div>
+            <div id="success-alert" class="alert alert-success">Congratuations! This text is fully decrypted.</div>
             <pre>{{ cleartext }}</pre>
         </div>
     </div>
@@ -18,4 +18,5 @@
       e.preventDefault();
       $(this).tab('show');
     });
+    $('#success-alert').hide();
 </script>

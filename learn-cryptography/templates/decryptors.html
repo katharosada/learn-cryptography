@@ -10,9 +10,13 @@
     <script>
         pasteText = function(data) {
             var d = window.JSON.parse(data);
-            alert(d.win);
             $('#decrypted pre').text(d.text);
             $('#texttabs a[href="#decrypted"]').tab('show');
+            if (d.win) {
+                $('#success-alert').show();
+            } else {
+                $('#success-alert').hide();
+            }
         };
 
         decrypt = function() {

@@ -5,16 +5,27 @@ from google.appengine.ext import ndb
 
 import string
 
-def make_rot_n(n):
+
+def getRoter(n):
     lc = string.lowercase
     uc = string.uppercase
     trans = string.maketrans(lc + uc, lc[n:] + lc[:n] + uc[n:] + uc[:n])
     return lambda s: string.translate(s, trans)
 
+encrypters = {'caesar':getRoter(3)}
+decrypters = {'caesar':getRoter(23)}
+
+def getEncrypter(name):
+    return encrypters[name]
+
+def getDecrypter(name):
+    return decrypters[name]
+
+
 def rotate(text, rot):
     rot = int(rot)
     text = text.encode('ascii', 'ignore').strip()
-    return make_rot_n(rot)(text)
+    return getRoter(rot)(text)
 
 def check_result(text_key, text):
     key = ndb.Key(model.Text, text_key)
