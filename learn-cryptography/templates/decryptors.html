@@ -1,5 +1,5 @@
 <div class="row-fluid">
-    <div class="span5">
+    <div class="span3">
         <h2>Decryptors</h2>
         <p>Use these decrypting tools to decipher the text.</p>
             <select>
@@ -12,7 +12,7 @@
         <br>
         <br>
     </div>
-    <div class="span7">
+    <div class="span3">
         <h3>Alphabetical Rotation</h3>
         <form onsubmit="decrypt(); return false" id="rotate_decryptor">
             <select name="rotate">
@@ -20,6 +20,26 @@
                 <option value="{{ i }}">{{ i }} ({{ i - 26}})</option>
                 {% endfor %}
             </select><br>
+            <input type="submit" value="Decrypt">
+        </form>            
+    </div>
+    <div class="span6">
+        <h3>Alphabetical Rotation</h3>
+        <form onsubmit="decrypt(); return false" id="translation_decryptor">
+            <table>
+                <tr>
+                    {% for i in alphabet %}
+                        <td style="padding-left:5px">{{ i }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for i in alphabet %}
+                        <td>
+                            <input type="text" name="{{i}}" value="" maxlength="1" style="width:0.8em;padding-right:3px;margin:0px -2px">
+                        </td>
+                    {% endfor %}
+                </tr>
+            </table>
             <input type="submit" value="Decrypt">
         </form>            
     </div>

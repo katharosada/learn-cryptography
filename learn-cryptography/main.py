@@ -6,6 +6,7 @@ import jinja2
 import model
 import decrypt
 from google.appengine.ext import ndb
+import string
 
 jinja_environment = jinja2.Environment(autoescape=True,
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
@@ -26,6 +27,7 @@ class LevelHandler(webapp2.RequestHandler):
         values = {
                 'level':level,
                 'text':text,
+                'alphabet':string.lowercase
                 }
         template = jinja_environment.get_template('level.html')
         self.response.out.write(template.render(values))
