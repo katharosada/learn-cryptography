@@ -57,8 +57,8 @@ class DecryptHandler(webapp2.RequestHandler):
     def post(self):
         rot = self.request.get('rotate')
         text_key = self.request.get('text')
-        text = ndb.Key(model.Text, text_key).get()
         logging.info('Decrypting text key: %s, with decryption algorithm: %s' % (text_key, 'rotate'))
+        text = ndb.Key(model.Text, text_key).get()
 
         decrypted = rotate(text.encrypted, rot)
         self.response.out.write(

@@ -14,7 +14,8 @@
     </div>
     <div class="span3">
         <h3>Alphabetical Rotation</h3>
-        <form onsubmit="decrypt(); return false" id="rotate_decryptor">
+        <form onsubmit="decrypt('#rotate_decryptor'); return false" id="rotate_decryptor">
+            <input type="hidden" name="decryptor" value="rotate">
             <select name="rotate">
                 {% for i in range(26) %}
                 <option value="{{ i }}">{{ i }} ({{ i - 26}})</option>
@@ -25,7 +26,8 @@
     </div>
     <div class="span6">
         <h3>Alphabetical Rotation</h3>
-        <form onsubmit="decrypt(); return false" id="translation_decryptor">
+        <form onsubmit="decrypt('#translation_decryptor'); return false" id="translation_decryptor">
+            <input type="hidden" name="decryptor" value="translate">
             <table>
                 <tr>
                     {% for i in alphabet %}
@@ -56,11 +58,15 @@
         }
     };
 
-    decrypt = function() {
+    decrypt = function(form_id) {
+        arr = $(form_id).serializeArray()
+        params = {}
+        for (var i = 0; i < arr.length; i++) {
+            params[arr[i].name] = arr[i].value;
+        }
+        params['text'] = '{{ text.key.id() }}';
         var jqxhr = $.post(
-            '/decrypt', 
-            {"rotate":$("#rotate_decryptor select option:selected").val(),
-                "text":"{{ text.key.id() }}"},
+            '/decrypt', params,
             pasteText
         ).error(function() { alert("error"); })
     }
