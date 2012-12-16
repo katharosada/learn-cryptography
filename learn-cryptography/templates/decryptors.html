@@ -1,31 +1,47 @@
-<p>
-    <form onsubmit="decrypt(); return false" id="rotate_decryptor">
-        <select name="rotate">
-            {% for i in range(26) %}
-            <option value="{{ i }}">{{ i }} ({{ i - 26}})</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Decrypt">
-    </form>            
-    <script>
-        pasteText = function(data) {
-            var d = window.JSON.parse(data);
-            $('#decrypted pre').text(d.text);
-            $('#texttabs a[href="#decrypted"]').tab('show');
-            if (d.win) {
-                $('#success-alert').show();
-            } else {
-                $('#success-alert').hide();
-            }
-        };
-
-        decrypt = function() {
-            var jqxhr = $.post(
-                '/decrypt', 
-                {"rotate":$("#rotate_decryptor select option:selected").val(),
-                    "text":"{{ text.key.id() }}"},
-                pasteText
-            ).error(function() { alert("error"); })
+<div class="row-fluid">
+    <div class="span5">
+        <h2>Decryptors</h2>
+        <p>Use these decrypting tools to decipher the text.</p>
+            <select>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </select>
+        <br>
+        <br>
+    </div>
+    <div class="span7">
+        <h3>Alphabetical Rotation</h3>
+        <form onsubmit="decrypt(); return false" id="rotate_decryptor">
+            <select name="rotate">
+                {% for i in range(26) %}
+                <option value="{{ i }}">{{ i }} ({{ i - 26}})</option>
+                {% endfor %}
+            </select><br>
+            <input type="submit" value="Decrypt">
+        </form>            
+    </div>
+</div>
+<script>
+    pasteText = function(data) {
+        var d = window.JSON.parse(data);
+        $('#decrypted pre').text(d.text);
+        $('#texttabs a[href="#decrypted"]').tab('show');
+        if (d.win) {
+            $('#success-alert').show();
+        } else {
+            $('#success-alert').hide();
         }
-    </script>
-</p>
+    };
+
+    decrypt = function() {
+        var jqxhr = $.post(
+            '/decrypt', 
+            {"rotate":$("#rotate_decryptor select option:selected").val(),
+                "text":"{{ text.key.id() }}"},
+            pasteText
+        ).error(function() { alert("error"); })
+    }
+</script>
