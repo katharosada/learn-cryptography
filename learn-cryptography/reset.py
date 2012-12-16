@@ -65,13 +65,21 @@ def resetAllTheThings():
         level_list.name = 'default'
         level_list.put()
 
-    # Level 1
+    # Filler text
+    resetText('janeeyre', 'Jane Eyre')
+
+    # Level 1 - Caesar Cipher
     resetText('caesar', 'Caesar Cipher Wikipedia Page')
     resetLevel('caesar', 'Julius Caesar', 'caesar')
 
-    # Level 2
-    resetText('railenvy', 'Jane Eyre')
-    resetLevel('railenvy', 'Rail Envy', 'railenvy')
+    # Level 2 - ROT 13
+    resetLevel('railenvy', 'Rail Envy', 'janeeyre')
+
+    # Level 3 - Last Rotation Cipher
+    resetLevel('oneshot', 'You got one shot at this', 'janeeyre')
+
+    # Level 4 - Translation Cipher 1: UPINASI
+
 
 
 class ResetHandler(webapp2.RequestHandler):
