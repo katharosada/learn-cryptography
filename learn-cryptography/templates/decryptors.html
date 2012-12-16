@@ -22,7 +22,8 @@
         decrypt = function() {
             var jqxhr = $.post(
                 '/decrypt', 
-                {"rotate":$("#rotate_decryptor select option:selected").val()},
+                {"rotate":$("#rotate_decryptor select option:selected").val(),
+                    "text":"{{ text.key.id() }}"},
                 pasteText
             ).error(function() { alert("error"); })
         }

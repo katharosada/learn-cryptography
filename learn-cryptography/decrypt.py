@@ -1,3 +1,4 @@
+import logging
 import webapp2
 import model
 import json
@@ -12,8 +13,8 @@ def getRoter(n):
     trans = string.maketrans(lc + uc, lc[n:] + lc[:n] + uc[n:] + uc[:n])
     return lambda s: string.translate(s, trans)
 
-encrypters = {'caesar':getRoter(3)}
-decrypters = {'caesar':getRoter(23)}
+encrypters = {'caesar':getRoter(3), 'railenvy':getRoter(13)}
+decrypters = {'caesar':getRoter(23), 'railenvy':getRoter(13)}
 
 def getEncrypter(name):
     return encrypters[name]
@@ -27,9 +28,8 @@ def rotate(text, rot):
     text = text.encode('ascii', 'ignore').strip()
     return getRoter(rot)(text)
 
-def check_result(text_key, text):
-    key = ndb.Key(model.Text, text_key)
-    if text.strip() == key.get().content.strip():
+def check_result(text, decrypted_text):
+    if decrypted_text.strip() == text.content.strip():
         return True
     return False
 
@@ -40,9 +40,10 @@ class DecryptHandler(webapp2.RequestHandler):
     def post(self):
         rot = self.request.get('rotate')
         text_key = self.request.get('text')
-        text_key = "caesar"
         text = ndb.Key(model.Text, text_key).get()
+        logging.info('Decrypting text key: %s, with decryption algorithm: %s' % (text_key, 'rotate'))
+
         decrypted = rotate(text.encrypted, rot)
         self.response.out.write(
-                json.dumps({'win':check_result('caesar', decrypted), 'text':decrypted}))
+                json.dumps({'win':check_result(text, decrypted), 'text':decrypted}))
 

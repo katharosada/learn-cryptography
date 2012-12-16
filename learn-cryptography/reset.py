@@ -46,6 +46,15 @@ def resetTexts():
     text.encrypted = decrypt.getEncrypter('caesar')(ct)
     text.put()
 
+    key = ndb.Key(model.Text, 'railenvy')
+    text = key.get();
+    if not text:
+        text = model.Text(key=key)
+    text.name = "Rail Envy"
+    text.content = open('texts/texts/railenvy.txt', 'rU').read()
+    text.encrypted = decrypt.getEncrypter('railenvy')(text.content)
+    text.put()
+
 def resetAllTheThings():
     global default_levels
     global level_list
@@ -69,10 +78,25 @@ def resetAllTheThings():
     level1 = getOrCreateLevel(l1key)
     level1.name = "Julius Caesar"
     level1.startstory = open('texts/start/caesar.txt', 'rU').read()
-    level1.endstory = "And you cracked it! Caesar is annoyed."
+    level1.endstory = open('texts/end/caesar.txt', 'rU').read()
     level1.text = ndb.Key(model.Text, 'caesar')
     key = level1.put()
     results['level1'] = level1
+
+    # Level 2
+    l2key = ndb.Key(model.Level, 'railenvy')
+    if not l2key in level_list.levels:
+        level_list.levels.append(l2key)
+        level_list.put()
+
+    level2 = getOrCreateLevel(l2key)
+    level2.name = "Rail Envy"
+    level2.startstory = open('texts/start/railenvy.txt', 'rU').read()
+    level2.endstory = open('texts/end/railenvy.txt', 'rU').read()
+    level2.text = ndb.Key(model.Text, 'railenvy')
+    level2.put()
+    results['level2'] = level2
+
 
 
 class ResetHandler(webapp2.RequestHandler):
