@@ -13,8 +13,25 @@ def getRoter(n):
     trans = string.maketrans(lc + uc, lc[n:] + lc[:n] + uc[n:] + uc[:n])
     return lambda s: string.translate(s, trans)
 
-encrypters = {'caesar':getRoter(3), 'railenvy':getRoter(13)}
-decrypters = {'caesar':getRoter(23), 'railenvy':getRoter(13)}
+def getTranslator(aleph):
+    lc = string.lowercase
+    uc = string.uppercase
+    trans = string.maketrans(lc + uc, aleph + aleph.upper())
+    return lambda s: string.translate(s, trans)
+
+
+encrypters = {
+        'caesar':getRoter(3),
+        'railenvy':getRoter(13),
+        'oneshot':getRoter(21),
+        'upinasi':getTranslator('zyxwvutsrqponmlkjihgfedcba')
+}
+decrypters = {
+        'caesar':getRoter(23),
+        'railenvy':getRoter(13),
+        'oneshot':getRoter(5),
+        'upinasi':getTranslator('zyxwvutsrqponmlkjihgfedcba')
+}
 
 def getEncrypter(name):
     return encrypters[name]

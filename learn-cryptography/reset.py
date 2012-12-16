@@ -65,20 +65,21 @@ def resetAllTheThings():
         level_list.name = 'default'
         level_list.put()
 
-    # Filler text
-    resetText('janeeyre', 'Jane Eyre')
-
     # Level 1 - Caesar Cipher
     resetText('caesar', 'Caesar Cipher Wikipedia Page')
     resetLevel('caesar', 'Julius Caesar', 'caesar')
 
     # Level 2 - ROT 13
-    resetLevel('railenvy', 'Rail Envy', 'janeeyre')
+    resetLevel('railenvy', 'Rail Envy', 'railenvy')
 
     # Level 3 - Last Rotation Cipher
-    resetLevel('oneshot', 'You got one shot at this', 'janeeyre')
+    resetLevel('oneshot', 'You got one shot at this', 'oneshot')
 
-    # Level 4 - Translation Cipher 1: UPINASI
+    # Level 4 - Backwards alphabet translation
+    resetLevel('mixer', 'Mixing things up a bit', 'mixer')
+
+    # Level 5 - Translation Cipher 1: UPINASI
+    resetLevel('upinasi', 'TBD', 'upinasi')
 
 
 
