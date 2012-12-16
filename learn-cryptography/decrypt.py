@@ -24,12 +24,14 @@ encrypters = {
         'caesar':getRoter(3),
         'railenvy':getRoter(13),
         'oneshot':getRoter(21),
+        'mixer':getTranslator('zyxwvutsrqponmlkjihgfedcba'),
         'upinasi':getTranslator('zyxwvutsrqponmlkjihgfedcba')
 }
 decrypters = {
         'caesar':getRoter(23),
         'railenvy':getRoter(13),
         'oneshot':getRoter(5),
+        'mixer':getTranslator('zyxwvutsrqponmlkjihgfedcba'),
         'upinasi':getTranslator('zyxwvutsrqponmlkjihgfedcba')
 }
 
@@ -40,10 +42,17 @@ def getDecrypter(name):
     return decrypters[name]
 
 
-def rotate(text, rot):
-    rot = int(rot)
+def rotate(text, request):
+    rot = int(request.get('rotate'))
     text = text.encode('ascii', 'ignore').strip()
     return getRoter(rot)(text)
+
+def translate(text, request):
+    aleph = "".join([request.get(a) or '-' for a in string.lowercase])
+    logging.info(aleph)
+    text = text.encode('ascii', 'ignore').strip()
+    return getTranslator(aleph)(text)
+
 
 def check_result(text, decrypted_text):
     if decrypted_text.strip() == text.content.strip():
@@ -55,12 +64,14 @@ class DecryptHandler(webapp2.RequestHandler):
         self.response.out.write("GET was called")
 
     def post(self):
-        rot = self.request.get('rotate')
         text_key = self.request.get('text')
-        logging.info('Decrypting text key: %s, with decryption algorithm: %s' % (text_key, 'rotate'))
+        logging.info('Decrypting text key: %s, with decryption algorithm: %s' % (text_key, self.request.get('decryptor')))
         text = ndb.Key(model.Text, text_key).get()
 
-        decrypted = rotate(text.encrypted, rot)
+        if self.request.get('decryptor') == 'rotate':
+            decrypted = rotate(text.encrypted, self.request)
+        else:
+            decrypted = translate(text.encrypted, self.request)
         self.response.out.write(
                 json.dumps({'win':check_result(text, decrypted), 'text':decrypted}))
 
