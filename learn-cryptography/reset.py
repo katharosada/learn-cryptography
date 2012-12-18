@@ -81,9 +81,9 @@ def resetAllTheThings():
     resetText('mixer', 'Mixer')
     resetLevel('mixer', 'Mixing things up a bit', 'mixer')
 
-    # Level 5 - Translation Cipher 1: UPINASI
-    resetText('upinasi', 'Blah')
-    resetLevel('upinasi', 'TBD', 'upinasi')
+    # Level 5 - Translation Cipher 1: Scramble
+    resetText('scramble', 'Blah')
+    resetLevel('scramble', 'TBD', 'scramble')
 
 
 

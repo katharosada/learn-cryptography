@@ -25,14 +25,14 @@ encrypters = {
         'railenvy':getRoter(13),
         'oneshot':getRoter(21),
         'mixer':getTranslator('zyxwvutsrqponmlkjihgfedcba'),
-        'upinasi':getTranslator('kgxmqblwrjnydshzatoeuifpvc')
+        'scramble':getTranslator('kgxmqblwrjnydshzatoeuifpvc')
 }
 decrypters = {
         'caesar':getRoter(23),
         'railenvy':getRoter(13),
         'oneshot':getRoter(5),
         'mixer':getTranslator('zyxwvutsrqponmlkjihgfedcba'),
-        'upinasi':getTranslator('qfzmtwbovjagdksxeinruyhclp')
+        'scramble':getTranslator('qfzmtwbovjagdksxeinruyhclp')
 }
 
 def getEncrypter(name):
