@@ -1,3 +1,4 @@
+<h3>Analysis Tools</h3>
 <div class="tabbable"> <!-- Only required for left/right tabs -->
     <ul class="nav nav-tabs" id="analysistabs">
         <li class="active"><a href="#analysis_freq" data-toggle="tab">Frequency Analysis</a></li>
@@ -5,10 +6,16 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="analysis_freq">
-            <h4>English Letter Percentages</h4>
-            <div id="freq" style="width:400px;height:300px"></div>
-            <h4>Encrypted Text Letter Counts</h4>
-            <div id="textfreq" style="width:400px;height:300px"></div>
+            <div class="row-fluid">
+                <div class="span6">
+                    <h4>English Letter Percentages</h4>
+                    <div id="freq" style="width:400px;height:300px"></div>
+                </div>
+                <div class="span6">
+                    <h4>Encrypted Text Letter Counts</h4>
+                    <div id="textfreq" style="width:400px;height:300px"></div>
+                </div>
+            </div>
             <p></p>
         </div>
         <div class="tab-pane" id="analysis_common">
@@ -100,6 +107,6 @@
            d1,
            options
          );
-
     };
+    create_text_graph();
 </script>

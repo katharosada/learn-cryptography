@@ -1,37 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container-fluid">
+    <h2>Challenge: {{ level.name }}</h2>
     <div class="row-fluid">
-        <div class="span3">
-            <div class="well">
-                <h2>{{ level.name }}</h2>
-                {{ level.startstory | safe }}
-            </div><!--/.well -->
-        </div><!--/span-->
-        <div class="span9">
-            <div class="row-fluid">
-                <div class="span12 well">
-                    <div id="decryptors">
-                        <!-- Decryptors go here -->
-                        {% include 'decryptors.html' %}
-                    </div>
-                </div><!--/span-->
-            </div><!--/row-->
-            <div class="row-fluid">
-                <div class="span5 ">
-                    <h2>Analysis Tools</h2>
-                    <div id="analysis">
-                        <!-- Analysis box goes here -->
-                        {% include 'analysis.html' %}
-                    </div>
-                </div>
-                <div class="span7">
-                    <h2>Text</h2>
-                    <div id="texts">
-                        {% include 'texts.html' %}
-                        <!-- Texts go here -->
-                    </div>
-                </div>
+        <div class="span5">
+            <div id="texts">
+                {% include 'texts.html' %}
+                <!-- Texts go here -->
+            </div>
+        </div>
+        <div class="span7">
+            <div id="decryptors">
+                <!-- Decryptors go here -->
+                {% include 'decryptors.html' %}
+            </div>
+            <div id="analysis">
+                <!-- Analysis box goes here -->
+                {% include 'analysis.html' %}
             </div>
         </div><!--/span-->
     </div><!--/row-->

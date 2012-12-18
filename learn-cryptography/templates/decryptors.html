@@ -1,49 +1,43 @@
-<div class="row-fluid">
-    <div class="span3">
-        <h2>Decryptors</h2>
-        <p>Use these decrypting tools to decipher the text.</p>
-            <select>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </select>
-        <br>
-        <br>
-    </div>
-    <div class="span3">
-        <h3>Alphabetical Rotation</h3>
-        <form onsubmit="decrypt('#rotate_decryptor'); return false" id="rotate_decryptor">
-            <input type="hidden" name="decryptor" value="rotate">
-            <select name="rotate">
-                {% for i in range(26) %}
-                <option value="{{ i }}">{{ i }} ({{ i - 26}})</option>
-                {% endfor %}
-            </select><br>
-            <input type="submit" value="Decrypt" class="btn">
-        </form>            
-    </div>
-    <div class="span6">
-        <h3>Alphabetical Rotation</h3>
-        <form onsubmit="decrypt('#translation_decryptor'); return false" id="translation_decryptor">
-            <input type="hidden" name="decryptor" value="translate">
-            <table>
-                <tr>
-                    {% for i in alphabet %}
-                        <td style="padding-left:5px">{{ i }}</td>
+<h3>Decryptors</h3>
+<div class="tabbable">
+    <ul class="nav nav-tabs" is="decryptortabs">
+        <li class="active"><a href="#decryptor_rotate" data-toggle="tab">Rotation</a></li>
+        <li><a href="#decryptor_translate" data-toggle="tab">Translate</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="decryptor_rotate">
+            <h4>Alphabetical Rotation</h4>
+            <form onsubmit="decrypt('#rotate_decryptor'); return false" id="rotate_decryptor">
+                <input type="hidden" name="decryptor" value="rotate">
+                <select name="rotate">
+                    {% for i in range(26) %}
+                    <option value="{{ i }}">{{ i }} ({{ i - 26}})</option>
                     {% endfor %}
-                </tr>
-                <tr>
-                    {% for i in alphabet %}
-                        <td>
-                            <input type="text" name="{{i}}" value="" maxlength="1" style="width:0.8em;padding-right:3px;margin:0px -2px">
-                        </td>
-                    {% endfor %}
-                </tr>
-            </table>
-            <input type="submit" value="Decrypt" class="btn">
-        </form>            
+                </select><br>
+                <input type="submit" value="Decrypt" class="btn">
+            </form>            
+        </div>
+        <div class="tab-pane" id="decryptor_translate">
+            <h4>Alphabetical Translation</h4>
+            <form onsubmit="decrypt('#translation_decryptor'); return false" id="translation_decryptor">
+                <input type="hidden" name="decryptor" value="translate">
+                <table>
+                    <tr>
+                        {% for i in alphabet %}
+                            <td style="padding-left:5px">{{ i }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for i in alphabet %}
+                            <td>
+                                <input type="text" name="{{i}}" value="" maxlength="1" style="width:0.8em;padding-right:3px;margin:0px -2px">
+                            </td>
+                        {% endfor %}
+                    </tr>
+                </table>
+                <input type="submit" value="Decrypt" class="btn">
+            </form>            
+        </div>
     </div>
 </div>
 <script>
