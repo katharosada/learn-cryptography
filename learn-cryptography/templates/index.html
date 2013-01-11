@@ -8,7 +8,11 @@
         <h1>Hello, world!</h1>
         <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
         <p>
-            <a href="/level?level={{ start_id }}">Get started</a>
+            {% if resetdb %}
+                <h2>You need to reset the database: <a href="/resetdata">Reset Now</a>
+            {% else %}
+                <a href="/level?level={{ start_id }}">Get started</a>
+            {% endif %}
         </p>
     </div>
 

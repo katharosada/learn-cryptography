@@ -14,7 +14,10 @@ jinja_environment = jinja2.Environment(autoescape=True,
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         level_seq = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
-        values = {'levels':level_seq, 'start_id':level_seq.levels[0].urlsafe()}
+        if level_seq and level_seq.levels and len(level_seq.levels) > 1:
+            values = {'levels':level_seq, 'start_id':level_seq.levels[0].urlsafe()}
+        else:
+            values = {'resetdb':True}
         template = jinja_environment.get_template('index.html')
         self.response.out.write(template.render(values))
 
