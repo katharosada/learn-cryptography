@@ -21,6 +21,14 @@ class MainHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('index.html')
         self.response.out.write(template.render(values))
 
+def getNextLevel(current):
+    level_seq = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
+    l = level_seq.levels.index(current) + 1
+    if l >= len(level_seq.levels):
+        return None
+    return level_seq.levels[l].urlsafe()
+
+
 class LevelHandler(webapp2.RequestHandler):
     def get(self):
         urlstring = self.request.get('level')
@@ -30,7 +38,8 @@ class LevelHandler(webapp2.RequestHandler):
         values = {
                 'level':level,
                 'text':text,
-                'alphabet':string.lowercase
+                'alphabet':string.lowercase,
+                'next_level':getNextLevel(level.key),
                 }
         template = jinja_environment.get_template('level.html')
         self.response.out.write(template.render(values))

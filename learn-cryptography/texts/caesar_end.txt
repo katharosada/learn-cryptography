@@ -1,3 +1,5 @@
+<h3>Awesome!</h3>
+
 <p>
-And you cracked it! Caesar would be proud.
-<p>
+You can see how the text was encrypted with the Caesar Cipher, all the letters were shiffed over by 3 and you just had to shift them all back by 3. If you want to read the message you can go back and read it, if not go ahead with the next level!
+</p>

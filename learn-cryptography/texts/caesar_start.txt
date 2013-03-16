@@ -1,10 +1,16 @@
-<p>"A message from Rome, Sir!"</p>
-<p>"Thank you Legionaire, leave it here."</p>
+<h3>Welcome!</h3>
+<p>
+Ever wanted to send a secret message to a friend, but you were worried other people would read it? How do you make it so that your friend can read it and not anyone else?
+</p><p>
 
-<p>Gaius Crastinus, sighed and glanced over at the message. As a Centurion, he had learned to read and write unlike the legionaries he commanded. This message could contain important orders for the ongoing conquering of Gall. He opened it and was momentarily confused. Was this some new foreign language? The letters looked like normal Latin letters, separated into words, but they were all wrong! None of the combinations of letters looked like real words!</p>
+This is where we use cryptography, friends can choose a process for encoding and decoding messages so that only the people who know the process can read them. Then we can send as many messages as we like! The only problem is that a lot of these codes can be broken, in each level, you'll need to analyse an encrypted message and break the code. Each of these processes is called a Cipher.
+</p><p>
 
-<p>Something stirred in Gaius's memory, ah yes, he had been informed of this when he was last in in Rome. Secret communications during military campaigns would be translated with a special system devised by the Caesar himself. At least, it seemed simple at the time. Gaius couldn't remember now what that system was as he stared bewilderd at the nonsense words before him.</p>
+This first cipher was used by Julius Caesar to send messages during military campaigns. Since this was in the days before computers, it had to be simple process so that it was easy for people to encode and decode the messages. You can read more about <a href="#">Caesar ciphers on Wikipedia</a>. 
+</p><p>
 
-<p>It had something to do with swapping each letter for another letter near it in the alphabet. Perhaps... perhaps if he looked at which letters were most common in normal Latin texts and which letters were most common in this encrypted message, he could remember what that special system was...</p>
+Basically, it's translating a message by moving each letter to a letter further on in the alphabet. For example, a caeser cipher of 2 would translate 'a' into 'c' and 'b' into 'd' and 'c' turn into 'e' and so on for the whole alphabet. If you reach the end then you wrap around to the start of the alphabet again, so 'y' becomes 'a' and 'z' becomes 'b'. Then if you want to decrypt the message back, you move all the letters backwards in the alphabet by 2. So 'c' becomes back to 'a', and so on.
+</p><p>
 
-
+There's no record of anyone discovering how to break the Caesar Cipher at the time, but it is actually very easy to break by adding up how often each letter appears in the message, and comparing that to how offten each letter appears in other text of the same language. For example, the most common letter in English is 'e', and the frequencies of different letters can be shown below. The frequencies of the message won't match exactly to the normal English frequencies, but it's usually close enough to make a good guess which letters 'e' and 't' are (since they're they most common).
+</p>

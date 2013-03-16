@@ -1,0 +1,10 @@
+<p>"A message from Rome, Sir!"</p>
+<p>"Thank you Legionaire, leave it here."</p>
+
+<p>Gaius Crastinus, sighed and glanced over at the message. As a Centurion, he had learned to read and write unlike the legionaries he commanded. This message could contain important orders for the ongoing conquering of Gall. He opened it and was momentarily confused. Was this some new foreign language? The letters looked like normal Latin letters, separated into words, but they were all wrong! None of the combinations of letters looked like real words!</p>
+
+<p>Something stirred in Gaius's memory, ah yes, he had been informed of this when he was last in in Rome. Secret communications during military campaigns would be translated with a special system devised by the Caesar himself. At least, it seemed simple at the time. Gaius couldn't remember now what that system was as he stared bewilderd at the nonsense words before him.</p>
+
+<p>It had something to do with swapping each letter for another letter near it in the alphabet. Perhaps... perhaps if he looked at which letters were most common in normal Latin texts and which letters were most common in this encrypted message, he could remember what that special system was...</p>
+
+

@@ -19,11 +19,97 @@
             <p></p>
         </div>
         <div class="tab-pane" id="analysis_common">
-            <p>Analysis 2</p>
+            <h4>List of most common words</h4>
+            <div class="row-fluid">
+                <div class="span6">
+                    <h4>English common words</h4>
+                    <pre>
+the
+be
+to
+of
+and
+a
+in
+that
+have
+I
+it
+for
+not
+on
+with
+he
+as
+you
+do
+at
+this
+but
+his
+by
+from
+they
+we
+say
+her
+she
+or
+an
+will
+my
+one
+all
+would
+there
+their
+what
+</pre>
+                </div>
+                <div class="span6">
+                    <h4>Encrypted Text common words</h4>
+                    <pre id="commonwords">
+                    </pre>
+                </div>
+            </div>
+            <p></p>
         </div>
     </div>
 </div>
 <script>
+    var min = function(a, b) {
+        if (a > b) {
+            return b;
+        }
+        return a;
+    }
+
+    // Common words
+    var common_words = function() {
+        var text = $('#encrypted pre').text().replace(/[^\w\s]/g, '').toLowerCase().trim().split(/\s+/);
+        var freqs = {};
+        for ( var i = 0; i < text.length; i++ ) {
+            freqs[text[i]] = (freqs[text[i]] || 0) + 1;
+        }
+        tups = [];
+        for (var k in freqs) {
+            tups.push([k, freqs[k]]);
+        }
+        tups.sort(function(a, b) {return a[1] - b[1]});
+        tups.reverse();
+        console.log(tups);
+        out = [];
+        for (var i = 0; i < min(tups.length, 30); i++) {
+            out.push(tups[i][0] + " (" + tups[i][1] + ")");
+        }
+
+        $("#commonwords").text(out.join("\n"));
+
+    };
+    common_words();
+
+
+
     $('#analysistabs a').click(function (e) {
       e.preventDefault();
       $(this).tab('show');
