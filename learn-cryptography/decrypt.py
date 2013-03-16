@@ -26,6 +26,7 @@ encrypters = {
         'oneshot':getRoter(21),
         'mixer':getTranslator('zyxwvutsrqponmlkjihgfedcba'),
         'scramble':getTranslator('kgxmqblwrjnydshzatoeuifpvc')
+        'upinasi':getTranslator('ecdfighjoklmnpuqrstvawxyzb')
 }
 decrypters = {
         'caesar':getRoter(23),
@@ -33,6 +34,7 @@ decrypters = {
         'oneshot':getRoter(5),
         'mixer':getTranslator('zyxwvutsrqponmlkjihgfedcba'),
         'scramble':getTranslator('qfzmtwbovjagdksxeinruyhclp')
+        'upinasi':getTranslator('uzbcadfgehjklminpqrsotvwxy')
 }
 
 def getEncrypter(name):
