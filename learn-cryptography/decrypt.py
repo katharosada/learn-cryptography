@@ -25,7 +25,7 @@ encrypters = {
         'railenvy':getRoter(13),
         'oneshot':getRoter(21),
         'mixer':getTranslator('zyxwvutsrqponmlkjihgfedcba'),
-        'scramble':getTranslator('kgxmqblwrjnydshzatoeuifpvc')
+        'scramble':getTranslator('kgxmqblwrjnydshzatoeuifpvc'),
         'upinasi':getTranslator('ecdfighjoklmnpuqrstvawxyzb')
 }
 decrypters = {
@@ -33,7 +33,7 @@ decrypters = {
         'railenvy':getRoter(13),
         'oneshot':getRoter(5),
         'mixer':getTranslator('zyxwvutsrqponmlkjihgfedcba'),
-        'scramble':getTranslator('qfzmtwbovjagdksxeinruyhclp')
+        'scramble':getTranslator('qfzmtwbovjagdksxeinruyhclp'),
         'upinasi':getTranslator('uzbcadfgehjklminpqrsotvwxy')
 }
 
