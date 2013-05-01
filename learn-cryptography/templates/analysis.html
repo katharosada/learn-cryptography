@@ -1,0 +1,198 @@
+<h3>Analysis Tools</h3>
+<div class="tabbable"> <!-- Only required for left/right tabs -->
+    <ul class="nav nav-tabs" id="analysistabs">
+        <li class="active"><a href="#analysis_freq" data-toggle="tab">Frequency Analysis</a></li>
+        <li><a href="#analysis_common" data-toggle="tab">Common words</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="analysis_freq">
+            <div class="row-fluid">
+                <div class="span6">
+                    <h4>English Letter Percentages</h4>
+                    <div id="freq" style="width:400px;height:300px"></div>
+                </div>
+                <div class="span6">
+                    <h4>Encrypted Text Letter Counts</h4>
+                    <div id="textfreq" style="width:400px;height:300px"></div>
+                </div>
+            </div>
+            <p></p>
+        </div>
+        <div class="tab-pane" id="analysis_common">
+            <h4>List of most common words</h4>
+            <div class="row-fluid">
+                <div class="span6">
+                    <h4>English common words</h4>
+                    <pre>
+the
+be
+to
+of
+and
+a
+in
+that
+have
+I
+it
+for
+not
+on
+with
+he
+as
+you
+do
+at
+this
+but
+his
+by
+from
+they
+we
+say
+her
+she
+or
+an
+will
+my
+one
+all
+would
+there
+their
+what
+</pre>
+                </div>
+                <div class="span6">
+                    <h4>Encrypted Text common words</h4>
+                    <pre id="commonwords">
+                    </pre>
+                </div>
+            </div>
+            <p></p>
+        </div>
+    </div>
+</div>
+<script>
+    var min = function(a, b) {
+        if (a > b) {
+            return b;
+        }
+        return a;
+    }
+
+    // Common words
+    var common_words = function() {
+        var text = $('#encrypted pre').text().replace(/[^\w\s]/g, '').toLowerCase().trim().split(/\s+/);
+        var freqs = {};
+        for ( var i = 0; i < text.length; i++ ) {
+            freqs[text[i]] = (freqs[text[i]] || 0) + 1;
+        }
+        tups = [];
+        for (var k in freqs) {
+            tups.push([k, freqs[k]]);
+        }
+        tups.sort(function(a, b) {return a[1] - b[1]});
+        tups.reverse();
+        console.log(tups);
+        out = [];
+        for (var i = 0; i < min(tups.length, 30); i++) {
+            out.push(tups[i][0] + " (" + tups[i][1] + ")");
+        }
+
+        $("#commonwords").text(out.join("\n"));
+
+    };
+    common_words();
+
+
+
+    $('#analysistabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+    var letters = "abcdefghijklmnopqrstuvwxyz".split("");
+    var i = 0;
+    var xaxisLabels = letters.map(function(elt) { return [i++, elt]; });
+    var options =  {
+             legend: {
+               show: false,
+             },
+             series: {
+                   bars: {
+                     show       : true,
+                     align      : 'center',
+                     barWidth : 0.7,
+                   }
+             },
+             xaxis: { ticks: xaxisLabels, tickLength: 0 },
+             yaxis: {
+                   ticks: 10
+             },
+             grid: {
+                   show: true,
+                   backgroundColor: { colors: ["#fff", "#eee"] }
+             }
+         };
+
+    var create_english_graph = function() {
+        var dataSet = [
+            ['a', 8.167],  
+            ['b', 1.492],  
+            ['c', 2.782],  
+            ['d', 4.253],  
+            ['e', 12.702], 
+            ['f', 2.228],  
+            ['g', 2.015],  
+            ['h', 6.094],  
+            ['i', 6.966],  
+            ['j', 0.153],  
+            ['k', 0.772],  
+            ['l', 4.025],  
+            ['m', 2.406],  
+            ['n', 6.749],  
+            ['o', 7.507],  
+            ['p', 1.929],  
+            ['q', 0.095],  
+            ['r', 5.987],  
+            ['s', 6.327],  
+            ['t', 9.056],  
+            ['u', 2.758],  
+            ['v', 0.978],  
+            ['w', 2.360],  
+            ['x', 0.150], 
+            ['y', 1.974],
+            ['z', 0.074]
+        ];
+        var d1, xaxisLabels = [], i=0;
+        d1 = dataSet.map(function(elt){return {label: elt[0], data: [[i++, elt[1]]], color: "rgb(80, 120, 200)"};});
+        // example for xaxis option: {ticks: [[1,'One'], [2,'Two'], [3,'Three'], [4,'Four'], [5,'Five']]},
+        $.plot($('#freq'),
+           d1,
+           options
+         );
+    };
+    create_english_graph();
+
+    var create_text_graph = function() {
+        var text = $('#encrypted pre').text().toLowerCase();
+        var freqs = {};
+        for ( var i = 0; i < text.length; i++ ) {
+            if ('a' <= text[i] && text[i] <= 'z') {
+                freqs[text[i]] = (freqs[text[i]] || 0) + 1;
+            }
+        }
+        console.log(freqs);
+        var dataSet = letters.map(function(el){return [el, freqs[el] || 0]});
+        var d1, xaxisLabels = [], i=0;
+        d1 = dataSet.map(function(elt){return {label: elt[0], data: [[i++, elt[1]]], color: "rgb(80, 120, 200)"};});
+        $.plot($('#textfreq'),
+           d1,
+           options
+         );
+    };
+    create_text_graph();
+</script>
