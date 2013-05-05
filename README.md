@@ -1,4 +1,6 @@
 learn-cryptography
+==================
+
 This is an AppEngine app for learning basic crytography through analysing and
 decrypting a series of texts. It's designed as a game targeted at high school
 students.
