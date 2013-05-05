@@ -19,13 +19,22 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </a>
-                        <a class="brand" href="#">Learn Cryptography</a>
+                        <a class="brand" href="/">Learn Cryptography</a>
                         <div class="nav-collapse collapse">
                             <ul class="nav">
                                 <li class="active"><a href="/">Home</a></li>
                                 <li><a href="/level">Current Level</a></li>
                             </ul>
                         </div><!--/.nav-collapse -->
+                        <div class="pull-right">
+                            <ul class="nav">
+                            {% if user %}
+                                <li><a href="{{ signout_link }}">Sign out</a></li>
+                            {% else %}
+                                <li><a href="{{ signin_link }}">Sign in</a></li>
+                            {% endif %}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
