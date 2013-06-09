@@ -2,9 +2,12 @@
 import webapp2
 import os
 import jinja2
+import logging
+import json
 
 import model
 import decrypt
+import user_tracker
 from google.appengine.ext import ndb
 from google.appengine.api import users
 import string
@@ -13,16 +16,9 @@ jinja_environment = jinja2.Environment(autoescape=True,
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
 
 
-class BaseTemplateHandler(webapp2.RequestHandler):
-    """Wrapper around RequestHandler to support common operations.
-    
-    Handles user sign in and sign out operations, including filling in the base
-    template (base.html) values like the username, current signed in state etc.
+class BaseHandler(webapp2.RequestHandler):
+    """Base class for any handler that might want to use user info."""
 
-    A few class-level variables are used to set per-page constants.
-    """
-    # Name of the template file e.g. index.html
-    TEMPLATE = None
     # Set to true to redirect un-signed-in users to the sign in page.
     REQUIRE_SIGN_IN = False
 
@@ -33,6 +29,21 @@ class BaseTemplateHandler(webapp2.RequestHandler):
         redirect or not.
         """
         return self.REQUIRE_SIGN_IN
+
+    def getUserTracker(self):
+        """Pulls user information from the db."""
+        return user_tracker.UserTracker(users.get_current_user())
+
+class BaseTemplateHandler(BaseHandler):
+    """Wrapper around RequestHandler to support common operations.
+    
+    Handles user sign in and sign out operations, including filling in the base
+    template (base.html) values like the username, current signed in state etc.
+
+    A few class-level variables are used to set per-page constants.
+    """
+    # Name of the template file e.g. index.html
+    TEMPLATE = None
 
     def fillValues(self, values):
         """Fills in page-specific template information into the given dict."""
@@ -103,11 +114,13 @@ class LevelHandler(BaseTemplateHandler):
 
 class ProgressHandler(BaseTemplateHandler):
     """Handler for the progress page showing a user's completed levels."""
+
     TEMPLATE = 'progress.html'
     REQUIRE_SIGN_IN = True
 
     def fillValues(self, values):
-        pass
+        userTracker = self.getUserTracker()
+        values['levels_completed'] = userTracker.getLevelList()
 
 class AnalysisPaneHandler(webapp2.RequestHandler):
     def get(self):
@@ -124,13 +137,26 @@ class DecryptorsPaneHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('decryptors.html')
         self.response.out.write(template.render({}))
 
-class DecryptHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.out.write("GET was called")
-
+class DecryptHandler(BaseHandler):
     def post(self):
-        rotate = self.request.get('rotate')
-        self.response.out.write("POST was called %s " % rotate)
+        text_key = self.request.get('text')
+        level_key = self.request.get('level')
+        logging.info(
+                'Decrypting text key: %s, with decryption algorithm: %s' 
+                % (text_key, self.request.get('decryptor')))
+        text = ndb.Key(model.Text, text_key).get()
+        if self.request.get('decryptor') == 'rotate':
+            decrypted = decrypt.rotate(text.encrypted, self.request)
+        else:
+            decrypted = decrypt.translate(text.encrypted, self.request)
+        win = decrypt.check_result(text, decrypted)
+        self.response.out.write(
+                json.dumps({'win':win, 'text':decrypted}))
+        user = users.get_current_user()
+        if user and win:
+            # if the user is signed in, record they passed this level
+            self.getUserTracker().recordWin(level_key)
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
@@ -138,6 +164,6 @@ app = webapp2.WSGIApplication([
     ('/analysis', AnalysisPaneHandler),
     ('/texts', TextsPaneHandler),
     ('/decryptors', DecryptorsPaneHandler),
-    ('/decrypt', decrypt.DecryptHandler),
+    ('/decrypt', DecryptHandler),
     ('/progress', ProgressHandler),
 ], debug=True)

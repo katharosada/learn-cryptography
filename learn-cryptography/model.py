@@ -24,8 +24,7 @@ class Text(ndb.Model):
 class LevelList(ndb.Model):
     levels = ndb.KeyProperty(repeated=True)
 
-class User(ndb.Model):
-###    userid = ???
-    current_level = ndb.KeyProperty()
+class UserState(ndb.Model):
+    levels_completed = ndb.KeyProperty(repeated=True)
 
 

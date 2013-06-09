@@ -2,7 +2,12 @@
 {% block content %}
 
 <div class="container">
-
+    <h2>Levels completed</h2>
+    <ul>
+        {% for level in levels_completed %}
+        <li>{{ level }}</li>
+        {% endfor %}
+    </ul>
 </div> <!-- /container -->
 
 

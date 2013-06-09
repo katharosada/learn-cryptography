@@ -1,7 +1,6 @@
 import logging
 import webapp2
 import model
-import json
 from google.appengine.ext import ndb
 
 import string
@@ -60,20 +59,4 @@ def check_result(text, decrypted_text):
     if decrypted_text.strip() == text.content.strip():
         return True
     return False
-
-class DecryptHandler(webapp2.RequestHandler):
-    def get(self):
-        self.response.out.write("GET was called")
-
-    def post(self):
-        text_key = self.request.get('text')
-        logging.info('Decrypting text key: %s, with decryption algorithm: %s' % (text_key, self.request.get('decryptor')))
-        text = ndb.Key(model.Text, text_key).get()
-
-        if self.request.get('decryptor') == 'rotate':
-            decrypted = rotate(text.encrypted, self.request)
-        else:
-            decrypted = translate(text.encrypted, self.request)
-        self.response.out.write(
-                json.dumps({'win':check_result(text, decrypted), 'text':decrypted}))
 

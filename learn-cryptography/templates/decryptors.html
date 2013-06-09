@@ -59,6 +59,7 @@
             params[arr[i].name] = arr[i].value;
         }
         params['text'] = '{{ text.key.id() }}';
+        params['level'] = '{{ level.key.id() }}';
         var jqxhr = $.post(
             '/decrypt', params,
             pasteText
