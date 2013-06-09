@@ -93,7 +93,7 @@ class LevelHandler(BaseTemplateHandler):
         values['alphabet'] = string.lowercase
         values['next_level'] = self.getNextLevel(level.key)
 
-    def getNextLevel(current):
+    def getNextLevel(self, current):
         """Given a level id, look up the next level in the sequence."""
         level_seq = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
         l = level_seq.levels.index(current) + 1
