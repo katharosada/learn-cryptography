@@ -29,7 +29,10 @@ class UserTracker(object):
         "Returns a list of level id's that the user has completed."""
         levels = []
         for level_id in self.userState.levels_completed:
-            levels.append(level_id)
+            # Add whole level data to list
+            level = level_id.get()
+            if level:
+                levels.append(level)
         return levels
     
     def recordWin(self, level_id):

@@ -19,6 +19,23 @@ header {
    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
 
+levelset {
+
+}
+
+level {
+    display: inline-block;
+    background-color: #99AACB;
+    width: 6em;
+    padding: 1em;
+    text-align: center;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -khtml-border-radius: 12px;
+    border-radius: 12px;
+}
+
+
   /* Sticky footer styles
   -------------------------------------------------- */
 

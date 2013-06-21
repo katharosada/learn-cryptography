@@ -2,12 +2,14 @@
 {% block content %}
 
 <div class="container">
-    <h2>Levels completed</h2>
-    <ul>
-        {% for level in levels_completed %}
-        <li>{{ level }}</li>
-        {% endfor %}
-    </ul>
+    <h2>Progress</h2>
+        <levelset>
+            {% for level in levels_completed %}
+            <level>
+                <a href="/level?level={{ level.key.urlsafe() }}">{{ level.name }}</a>
+            </level>
+            {% endfor %}
+        </levelset>
 </div> <!-- /container -->
 
 
