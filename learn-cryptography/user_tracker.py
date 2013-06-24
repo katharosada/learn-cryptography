@@ -61,5 +61,15 @@ class UserTracker(object):
         # The state already exists, just update the status to completed.
         userLevelState.status = model.Status.COMPLETED
         userLevelState.put()
-        # TODO: unlock all the linked levels
+
+        # Unlock all the linked levels
+        for unlock_level_key in level_key.get().unlock_levels:
+            level_state_key = self.getLevelStateKey(unlock_level_key.id())
+            level_state = level_state_key.get()
+            if not level_state:
+                level_state = model.UserLevelState(key=level_state_key)
+            if level_state.status not in [model.Status.COMPLETED]:
+                level_state.status = model.Status.UNLOCKED
+                level_state.put()
+
 

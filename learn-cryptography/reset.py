@@ -37,7 +37,7 @@ def resetText(text_id, name):
     text.put()
 
 
-def resetLevel(level_id, name, text_id):
+def resetLevel(level_id, name, text_id, unlock_list):
     l1key = ndb.Key(model.Level, level_id)
     if not l1key in level_list.levels:
         level_list.levels.append(l1key)
@@ -48,6 +48,7 @@ def resetLevel(level_id, name, text_id):
     level.startstory = open('texts/%s_start.txt' % level_id, 'rU').read()
     level.endstory = open('texts/%s_end.txt' % level_id, 'rU').read()
     level.text = ndb.Key(model.Text, text_id)
+    level.unlock_levels = [ndb.Key(model.Level, id) for id in unlock_list]
     key = level.put()
     results[level_id] = level
     return level
@@ -67,23 +68,23 @@ def resetAllTheThings():
 
     # Level 1 - Caesar Cipher
     resetText('caesar', 'Caesar Cipher Wikipedia Page')
-    resetLevel('caesar', 'Julius Caesar', 'caesar')
+    resetLevel('caesar', 'Julius Caesar', 'caesar', ['railenvy'])
 
     # Level 2 - ROT 13
     resetText('railenvy', 'Rail Envy text')
-    resetLevel('railenvy', 'Rail Envy', 'railenvy')
+    resetLevel('railenvy', 'Rail Envy', 'railenvy', ['oneshot'])
 
     # Level 3 - Last Rotation Cipher
     resetText('oneshot', 'One shot')
-    resetLevel('oneshot', 'You got one shot at this', 'oneshot')
+    resetLevel('oneshot', 'You got one shot at this', 'oneshot', ['mixer'])
 
     # Level 4 - Backwards alphabet translation
     resetText('mixer', 'Mixer')
-    resetLevel('mixer', 'Mixing things up a bit', 'mixer')
+    resetLevel('mixer', 'Mixing things up a bit', 'mixer', ['scramble'])
 
     # Level 5 - Translation Cipher 1: Scramble
     resetText('scramble', 'Blah')
-    resetLevel('scramble', 'TBD', 'scramble')
+    resetLevel('scramble', 'TBD', 'scramble', [])
 
 
 
