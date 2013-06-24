@@ -4,9 +4,9 @@
 <div class="container">
     <h2>Progress</h2>
         <levelset>
-            {% for level in levels_completed %}
+            {% for level,state in levels_completed %}
             <level>
-                <a href="/level?level={{ level.key.urlsafe() }}">{{ level.name }}</a>
+            <a href="/level?level={{ level.key.urlsafe() }}">{{ level.name }} {{ state }}</a>
             </level>
             {% endfor %}
         </levelset>
