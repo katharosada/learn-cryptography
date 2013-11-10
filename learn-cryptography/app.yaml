@@ -10,12 +10,15 @@ handlers:
   upload: favicon\.ico
 
 - url: /static
+  login: admin
   static_dir: static
 
 - url: /resetdata
+  login: admin
   script: reset.app
 
 - url: .*
+  login: admin
   script: main.app
 
 libraries:
