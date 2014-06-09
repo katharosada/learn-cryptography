@@ -15,16 +15,16 @@ handlers:
 
 - url: /resetdata
   login: admin
-  script: reset.app
+  script: server.reset.app
 
 - url: /debug/.*
   login: admin
-  script: debug.app
+  script: server.debug.app
 
 # Catch-all, must go last.
 - url: .*
   login: admin
-  script: main.app
+  script: server.main.app
 
 libraries:
 - name: webapp2
