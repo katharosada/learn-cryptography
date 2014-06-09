@@ -13,10 +13,32 @@ handlers:
   login: admin
   static_dir: static
 
+- url: /js
+  login: admin
+  static_dir: client/js
+
+- url: /css
+  login: admin
+  static_dir: client/css
+
+- url: /bower_components
+  login: admin
+  static_dir: client/bower_components
+
+- url: /partials
+  login: admin
+  static_dir: client/partials
+
+- url: /
+  login: admin
+  static_files: client/index.html
+  upload: client/index.html
+
 - url: /resetdata
   login: admin
   script: server.reset.app
 
+# Debug handler
 - url: /debug/.*
   login: admin
   script: server.debug.app
