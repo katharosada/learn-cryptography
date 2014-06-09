@@ -1,0 +1,15 @@
+<div class="tabbable">
+    <ul class="nav nav-tabs" id="texttabs">
+        <li class="active"><a href="#encrypted" showtab="">Encrypted Text</a></li>
+        <li><a href="#decrypted" showtab="">Decrypted Text</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="encrypted">
+            <pre>{{ level.text.encrypted }}</pre>
+        </div>
+        <div class="tab-pane" id="decrypted">
+            <div id="success-alert" class="alert alert-success">Congratuations! This text is fully decrypted. <a id="next" href="/level?level={{ next_level }}">Continue</a></div>
+            <pre>{{level.text.cleartext}}</pre>
+        </div>
+    </div>
+</div>

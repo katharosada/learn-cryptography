@@ -89,6 +89,25 @@ class MainHandler(BaseTemplateHandler):
         else:
             values['resetdb'] = True
 
+class LevelDataHandler(BaseHandler):
+    def get(self):
+        self.request.get('level')
+        urlstring = self.request.get('level')
+        level_key = ndb.Key(urlsafe=urlstring)
+        level = level_key.get()
+        text = level.text.get()
+        values = {'key': level_key.urlsafe(), 'name': level.name}
+        values['text'] = {'key': text.key.urlsafe(), 'encrypted': text.encrypted, 'cleartext': ''}
+        values['next_level'] = self.getNextLevel(level.key)
+        self.response.out.write(json.dumps(values))
+
+    def getNextLevel(self, current):
+        """Given a level id, look up the next level in the sequence."""
+        level_seq = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
+        l = level_seq.levels.index(current) + 1
+        if l >= len(level_seq.levels):
+            return None
+        return level_seq.levels[l].urlsafe()
 
 
 class LevelHandler(BaseTemplateHandler):
@@ -166,6 +185,7 @@ class DecryptHandler(BaseHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/level', LevelHandler),
+    ('/level_data', LevelDataHandler),
     ('/analysis', AnalysisPaneHandler),
     ('/texts', TextsPaneHandler),
     ('/decryptors', DecryptorsPaneHandler),

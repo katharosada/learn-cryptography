@@ -1,0 +1,22 @@
+
+<div class="container-fluid">
+    <h2>Challenge: {{ level.name }}</h2>
+    <div class="row-fluid">
+        <div class="span5">
+            <div id="texts">
+                <!-- Texts go here -->
+                <ng-include src="includeUrls.texts" />
+            </div>
+        </div>
+        <div class="span7">
+            <div id="decryptors">
+                <!-- Decryptors go here -->
+                <ng-include src="includeUrls.decryptors" />
+            </div>
+            <div id="analysis">
+                <!-- Analysis box goes here -->
+                <ng-include src="includeUrls.analysis" />
+            </div>
+        </div><!--/span-->
+    </div><!--/row-->
+</div><!--/container-fluid-->

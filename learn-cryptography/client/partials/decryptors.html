@@ -1,0 +1,38 @@
+<h3>Decryptors</h3>
+<div class="tabbable">
+    <ul class="nav nav-tabs" is="decryptortabs">
+        <li class="active"><a href="#decryptor_rotate" showtab="">Rotation</a></li>
+        <li><a href="#decryptor_translate" showtab="">Translate</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="decryptor_rotate">
+            <h4>Alphabetical Rotation</h4>
+            <form onsubmit="decrypt('#rotate_decryptor'); return false" id="rotate_decryptor">
+                <input type="hidden" name="decryptor" value="rotate">
+                <select name="rotate">
+                  <option ng-repeat="i in range(1,26)" value="{{ i }}">
+                    {{ i }} ({{ i - 26}})
+                  </option>
+                </select><br>
+                <input type="submit" value="Decrypt" class="btn">
+            </form>
+        </div>
+        <div class="tab-pane" id="decryptor_translate">
+            <h4>Alphabetical Translation</h4>
+            <form onsubmit="decrypt('#translation_decryptor'); return false" id="translation_decryptor">
+                <input type="hidden" name="decryptor" value="translate">
+                <table>
+                    <tr>
+                      <td ng-repeat="letter in alphabet" style="padding-left:5px">{{letter}}</td>
+                    </tr>
+                    <tr>
+                        <td ng-repeat="letter in alphabet">
+                            <input type="text" name="{{letter}}" value="" maxlength="1" style="width:0.8em;padding-right:3px;margin:0px -2px">
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" value="Decrypt" class="btn">
+            </form>
+        </div>
+    </div>
+</div>
