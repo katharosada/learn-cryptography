@@ -17,6 +17,11 @@ handlers:
   login: admin
   script: reset.app
 
+- url: /debug/.*
+  login: admin
+  script: debug.app
+
+# Catch-all, must go last.
 - url: .*
   login: admin
   script: main.app
@@ -27,3 +32,6 @@ libraries:
 
 - name: jinja2
   version: latest
+
+env_variables:
+  OVERRIDE_ROOT_TEMPLATE: none

@@ -74,7 +74,12 @@ class BaseTemplateHandler(BaseHandler):
 
 class MainHandler(BaseTemplateHandler):
     """Handler for landing/home page."""
-    TEMPLATE = 'index.html'
+
+    if os.environ['OVERRIDE_ROOT_TEMPLATE'].lower() != "none":
+      TEMPLATE = os.environ['OVERRIDE_ROOT_TEMPLATE']
+      logging.info("Using experimental UI  " + repr(TEMPLATE))
+    else:
+      TEMPLATE = 'index.html'
 
     def fillValues(self, values):
         level_seq = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
