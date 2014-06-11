@@ -42,6 +42,16 @@ def getEncrypter(name):
 def getDecrypter(name):
     return decrypters[name]
 
+def decrypt(text, decryptor):
+    """Runs a decryptor, depending on the selected decryptor in the data.
+    Expects a text and a dictionary like this:
+    decryptor: {'id': '<id>', 'key':{<decryptor specific key info>}}
+    """
+    text = text.encode('ascii', 'ignore').strip()
+    if decryptor['id'] == 'rotate':
+        return getRoter(int(decryptor['key']['rotate']))(text)
+    else:
+        return "Foo"
 
 def rotate(text, request):
     rot = int(request.get('rotate'))

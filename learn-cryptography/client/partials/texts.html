@@ -8,7 +8,10 @@
             <pre>{{ level.text.encrypted }}</pre>
         </div>
         <div class="tab-pane" id="decrypted">
-            <div id="success-alert" class="alert alert-success">Congratuations! This text is fully decrypted. <a id="next" href="/level?level={{ next_level }}">Continue</a></div>
+            <div id="success-alert" class="alert alert-success" ng:show="level.success">
+                Congratuations! This text is fully decrypted.
+                <a id="next" href="/#/level/{{ level.next_level }}">Continue</a>
+            </div>
             <pre>{{level.text.cleartext}}</pre>
         </div>
     </div>

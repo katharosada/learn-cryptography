@@ -7,15 +7,15 @@
     <div class="tab-content">
         <div class="tab-pane active" id="decryptor_rotate">
             <h4>Alphabetical Rotation</h4>
-            <form onsubmit="decrypt('#rotate_decryptor'); return false" id="rotate_decryptor">
+            <ng:form id="rotate_decryptor">
                 <input type="hidden" name="decryptor" value="rotate">
-                <select name="rotate">
+                <select name="rotate" ng:model="rotate_decryptor.rotate">
                   <option ng-repeat="i in range(1,26)" value="{{ i }}">
                     {{ i }} ({{ i - 26}})
                   </option>
                 </select><br>
-                <input type="submit" value="Decrypt" class="btn">
-            </form>
+            </ng:form>
+            <button class="btn" ng-click="decrypt(rotate_decryptor)">Decrypt</button>
         </div>
         <div class="tab-pane" id="decryptor_translate">
             <h4>Alphabetical Translation</h4>

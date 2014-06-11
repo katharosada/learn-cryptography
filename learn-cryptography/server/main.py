@@ -161,6 +161,24 @@ class DecryptorsPaneHandler(webapp2.RequestHandler):
         template = jinja_environment.get_template('decryptors.html')
         self.response.out.write(template.render({}))
 
+class DecryptDataHandler(BaseHandler):
+    def post(self):
+        payload = self.request.body
+        data = json.loads(payload)
+        text = ndb.Key(urlsafe=data['text_key']).get()
+        level_key = ndb.Key(urlsafe=data['level_key'])
+        # TODO verify input (text must exist, decryptor valid etc.)
+        
+        decrypted = decrypt.decrypt(text.encrypted, data['decryptor']);
+        win = decrypt.check_result(text, decrypted)
+        self.response.out.write(
+                json.dumps({'win':win, 'text':decrypted}))
+        user = users.get_current_user()
+        if user and win:
+            # if the user is signed in, record they passed this level
+            self.getUserTracker().recordWin(level_key)
+
+
 class DecryptHandler(BaseHandler):
     def post(self):
         text_key = self.request.get('text')
@@ -179,6 +197,7 @@ class DecryptHandler(BaseHandler):
         user = users.get_current_user()
         if user and win:
             # if the user is signed in, record they passed this level
+            level_key = ndb.Key(model.Level, level_key)
             self.getUserTracker().recordWin(level_key)
 
 
@@ -186,6 +205,7 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/level', LevelHandler),
     ('/level_data', LevelDataHandler),
+    ('/decrypt_data', DecryptDataHandler),
     ('/analysis', AnalysisPaneHandler),
     ('/texts', TextsPaneHandler),
     ('/decryptors', DecryptorsPaneHandler),

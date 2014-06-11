@@ -47,10 +47,9 @@ class UserTracker(object):
         level_state_key = ndb.Key(pairs=self.userState.key.pairs()+((model.UserLevelState, level_id),))
         return level_state_key
     
-    def recordWin(self, level_id):
+    def recordWin(self, level_key):
         """Save the level id in the list of completed levels for this user."""
-        level_key = ndb.Key(model.Level, level_id)
-        levelStateKey = self.getLevelStateKey(level_id)
+        levelStateKey = self.getLevelStateKey(level_key.id())
 
         # Find existing UserLevelState (should either be already completed or at least unlocked)
         userLevelState = levelStateKey.get()
