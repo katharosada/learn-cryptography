@@ -50,8 +50,11 @@ def decrypt(text, decryptor):
     text = text.encode('ascii', 'ignore').strip()
     if decryptor['id'] == 'rotate':
         return getRoter(int(decryptor['key']['rotate']))(text)
+    elif decryptor['id'] == 'translate':
+        aleph = "".join([decryptor['key'][a] or '-' for a in string.lowercase])
+        return getTranslator(aleph)(text)
     else:
-        return "Foo"
+      return "Sorry, that's not a valid decryptor"
 
 def rotate(text, request):
     rot = int(request.get('rotate'))

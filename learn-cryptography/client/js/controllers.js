@@ -31,16 +31,19 @@ angular.module('cryptoApp.controllers', [])
 
     $scope.alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
-    $scope.rotate_decryptor = {"id":"rotate", "rotate": 1};
+    $scope.rotate_decryptor = {"id":"rotate", "key": {"rotate": 1}};
+    $scope.translate_decryptor = {"id":"translate", "key":{}}
+    for( var i = 0; i < $scope.alphabet.length; i++) {
+      $scope.translate_decryptor.key[$scope.alphabet[i]] = "";
+    }
+
     // TODO use this in future:
     // $scope.decrytpros = [{'id':'rotate', 'data':{'rotate':1}}, {'id':'translate', 'data':{}}];
     $scope.decrypt = function(decryptor_model) {
       var data = {};
       data.level_key = $scope.level.key;
       data.text_key = $scope.level.text.key;
-      var decryptor = {'id': 'rotate'};
-      decryptor.key = {'rotate': decryptor_model.rotate};
-      data.decryptor = decryptor;
+      data.decryptor = decryptor_model;
 
       $http.post('decrypt_data', data).success(
           function(response_data) {
