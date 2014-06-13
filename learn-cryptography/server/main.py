@@ -202,7 +202,7 @@ class DecryptHandler(BaseHandler):
 
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
+    ('/old_index', MainHandler),
     ('/level', LevelHandler),
     ('/level_data', LevelDataHandler),
     ('/decrypt_data', DecryptDataHandler),
