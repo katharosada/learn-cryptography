@@ -4,6 +4,7 @@
 // Declare app level module which depends on filters, and services
 angular.module('cryptoApp', [
   'ngRoute',
+  'chartjs-directive',
   'cryptoApp.filters',
   'cryptoApp.services',
   'cryptoApp.directives',
