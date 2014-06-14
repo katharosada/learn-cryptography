@@ -2,6 +2,34 @@
 
 /* Controllers */
 
+var min = function(a, b) {
+    if (a > b) {
+        return b;
+    }
+    return a;
+}
+
+// Common words
+var common_words = function(text) {
+    text = text.replace(/[^\w\s]/g, '').toLowerCase().trim().split(/\s+/);
+    var freqs = {};
+    for ( var i = 0; i < text.length; i++ ) {
+        freqs[text[i]] = (freqs[text[i]] || 0) + 1;
+    }
+    var tups = [];
+    for (var k in freqs) {
+        tups.push([k, freqs[k]]);
+    }
+    tups.sort(function(a, b) {return a[1] - b[1]});
+    tups.reverse();
+    var out = [];
+    for (var i = 0; i < min(tups.length, 30); i++) {
+        out.push(tups[i][0] + " (" + tups[i][1] + ")");
+    }
+    return out.join("\n");
+};
+
+
 var getFrequencies = function(text) {
   text = text.toLowerCase();
   var freqs = {};
@@ -26,7 +54,9 @@ var getFrequencies = function(text) {
 
 var fillCharts = function($scope) {
   $scope.textFreqChart.data.datasets[0].data = getFrequencies($scope.level.text.encrypted);
+  $scope.textCommonWords = common_words($scope.level.text.encrypted);
 };
+
 
 
 
