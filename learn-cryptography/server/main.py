@@ -34,6 +34,23 @@ class BaseHandler(webapp2.RequestHandler):
         """Pulls user information from the db."""
         return user_tracker.UserTracker(users.get_current_user())
 
+class UserDataHandler(BaseHandler):
+    def get(self):
+      signed_in = False
+      user = users.get_current_user()
+      name = ""
+      if user:
+        signed_in = True
+        name = user.nickname()
+      out = {
+          "is_signed_in":signed_in,
+          "name": name,
+          "sign_out_link": users.create_logout_url("/"),
+          "sign_in_link": users.create_login_url("/"),
+      }
+      self.response.out.write(json.dumps(out))
+
+
 class BaseTemplateHandler(BaseHandler):
     """Wrapper around RequestHandler to support common operations.
     
@@ -216,6 +233,7 @@ class DecryptHandler(BaseHandler):
 
 app = webapp2.WSGIApplication([
     ('/old_index', MainHandler),
+    ('/user_data', UserDataHandler),
     ('/level', LevelHandler),
     ('/level_data', LevelDataHandler),
     ('/decrypt_data', DecryptDataHandler),

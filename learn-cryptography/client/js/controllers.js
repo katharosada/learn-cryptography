@@ -59,8 +59,16 @@ var fillCharts = function($scope) {
 
 
 
-
 angular.module('cryptoApp.controllers', [])
+  .controller('MainController', ['$scope', '$http', function($scope, $http) {
+    // Assume not signed in to start with
+    $scope.user = {};
+    $scope.user.is_signed_in = false;
+    $http.get('/user_data').success(
+      function(data) {
+        $scope.user = data;
+      });
+  }])
   .controller('IndexController', ['$scope', function($scope) {
   }])
   .controller('ProgressController', ['$scope', '$http', function($scope, $http) {

@@ -20,7 +20,7 @@
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 
-<body>
+<body ng-controller="MainController">
   <div id="wrap">
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -38,12 +38,9 @@
             </ul>
           </div><!--/.nav-collapse -->
           <div class="pull-right">
-            <ul class="nav">
-              {% if user %}
-                  <li><a href="{{ signout_link }}">Sign out</a></li>
-              {% else %}
-                  <li><a href="{{ signin_link }}">Sign in</a></li>
-              {% endif %}
+            <ul class="nav" >
+                <li ng-if="user.is_signed_in"><a href="{{ user.sign_out_link }}">Sign out</a></li>
+                <li ng-if="!user.is_signed_in"><a href="{{ user.sign_in_link }}">Sign in</a></li>
             </ul>
           </div>
         </div>
