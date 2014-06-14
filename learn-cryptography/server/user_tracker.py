@@ -32,7 +32,7 @@ class UserTracker(object):
                 userLevelState.put()
 
     def getLevelList(self):
-        "Returns a list of level id's that the user has completed."""
+        "Returns a list of (level object, status) tuples for the levels that the user has completed."""
         levels = []
         level_sequence = ndb.Key(model.LevelSequence, model.LEVEL_LIST)
         for level_key in level_sequence.get().levels:

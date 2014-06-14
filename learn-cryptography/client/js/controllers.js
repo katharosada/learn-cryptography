@@ -33,6 +33,12 @@ var fillCharts = function($scope) {
 angular.module('cryptoApp.controllers', [])
   .controller('IndexController', ['$scope', function($scope) {
   }])
+  .controller('ProgressController', ['$scope', '$http', function($scope, $http) {
+    $http.get('/progress_data').success(
+      function(data) {
+        $scope.levels = data;
+      });
+  }])
   .controller('LevelController', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
 
     $http.get('level_data?level=' + $routeParams.levelKey).success(
@@ -122,7 +128,6 @@ angular.module('cryptoApp.controllers', [])
     }
     var options = {
         scaleShowLabels : false,
-        animation: false,
         scaleOverride: true,
         scaleSteps: 13,
         scaleStepWidth: 1,

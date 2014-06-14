@@ -146,6 +146,19 @@ class ProgressHandler(BaseTemplateHandler):
         userTracker = self.getUserTracker()
         values['levels_completed'] = userTracker.getLevelList()
 
+class ProgressDataHandler(BaseHandler):
+    # TODO: Fix this it's actually useless here, it's never checked.
+    # It should be replaced with a function decorator
+    REQUIRE_SIGN_IN = True
+
+    def get(self):
+        userTracker = self.getUserTracker()
+        levels = [
+            {'key': level.key.urlsafe(),
+             'name': level.name,
+             'status': status} for level,status in userTracker.getLevelList()]
+        self.response.out.write(json.dumps(levels))
+
 class AnalysisPaneHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_environment.get_template('analysis.html')
@@ -211,4 +224,5 @@ app = webapp2.WSGIApplication([
     ('/decryptors', DecryptorsPaneHandler),
     ('/decrypt', DecryptHandler),
     ('/progress', ProgressHandler),
+    ('/progress_data', ProgressDataHandler),
 ], debug=True)
