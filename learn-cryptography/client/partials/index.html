@@ -6,11 +6,7 @@
         <p></p>
         <p></p>
         <p>
-            {% if resetdb %}
-                <h2>You need to reset the database: <a href="/resetdata">Reset Now</a>
-            {% else %}
-                <a href="/level?level={{ start_id }}">Get started</a>
-            {% endif %}
+            <a href="/level?level={{ user.next_level_key }}">Get started</a>
         </p>
     </div>
 

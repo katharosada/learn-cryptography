@@ -39,6 +39,8 @@ class UserDataHandler(BaseHandler):
       signed_in = False
       user = users.get_current_user()
       name = ""
+      level_seq = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
+      next_level = level_seq.levels[0].urlsafe()
       if user:
         signed_in = True
         name = user.nickname()
@@ -47,6 +49,8 @@ class UserDataHandler(BaseHandler):
           "name": name,
           "sign_out_link": users.create_logout_url("/"),
           "sign_in_link": users.create_login_url("/"),
+          # TODO: If the user is signed in, this should be the level they are up to.
+          "next_level_key": next_level,
       }
       self.response.out.write(json.dumps(out))
 
