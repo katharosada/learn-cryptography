@@ -56,6 +56,9 @@ angular.module('cryptoApp.controllers', [])
       "decryptors": "partials/decryptors.html"
     };
 
+    $scope.encryptedTextTab = {'active':true};
+    $scope.decryptedTextTab = {'active':false};
+
     $scope.range = function(begin, end) {
       var result = [];
       for(var i = begin; i < end; i++) {
@@ -84,6 +87,8 @@ angular.module('cryptoApp.controllers', [])
           function(response_data) {
             // Update decrypted text tab
             $scope.level.text.cleartext = response_data.text;
+            // Active decrypted text tab
+            $scope.decryptedTextTab.active = true;
             // Signal success or failure
             if (response_data.win) {
               $scope.level.success = response_data.win;

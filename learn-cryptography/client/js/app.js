@@ -5,6 +5,7 @@
 angular.module('cryptoApp', [
   'ngRoute',
   'chartjs-directive',
+  'ui.bootstrap',
   'cryptoApp.filters',
   'cryptoApp.services',
   'cryptoApp.directives',

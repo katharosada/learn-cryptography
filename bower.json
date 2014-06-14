@@ -10,6 +10,7 @@
     "angular-loader": "1.2.x",
     "angular-mocks": "~1.2.x",
     "html5-boilerplate": "~4.3.0",
+    "angular-bootstrap": "*",
     "Chart.js": "*",
     "chartjs-directive": "*"
   }
