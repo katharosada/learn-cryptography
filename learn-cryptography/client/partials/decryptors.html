@@ -1,36 +1,30 @@
 <h3>Decryptors</h3>
-<div class="tabbable">
-    <ul class="nav nav-tabs" is="decryptortabs">
-        <li class="active"><a href="#decryptor_rotate" showtab="">Rotation</a></li>
-        <li><a href="#decryptor_translate" showtab="">Translate</a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="decryptor_rotate">
-            <h4>Alphabetical Rotation</h4>
-            <ng:form id="rotate_decryptor">
-                <select name="rotate" ng:model="rotate_decryptor.key.rotate">
-                  <option ng-repeat="i in range(1,26)" value="{{ i }}">
-                    {{ i }} ({{ i - 26}})
-                  </option>
-                </select><br>
-            </ng:form>
-            <button class="btn" ng-click="decrypt(rotate_decryptor)">Decrypt</button>
-        </div>
-        <div class="tab-pane" id="decryptor_translate">
-            <h4>Alphabetical Translation</h4>
-            <ng:form id="translation_decryptor">
-                <table>
-                    <tr>
-                      <td ng-repeat="letter in alphabet" style="padding-left:5px">{{letter}}</td>
-                    </tr>
-                    <tr>
-                        <td ng-repeat="letter in alphabet">
-                          <input type="text" name="{{letter}}" ng-model="translate_decryptor.key[letter]" maxlength="1" style="width:0.8em;padding-right:3px;margin:0px -2px">
-                        </td>
-                    </tr>
-                </table>
-                <button class="btn" ng-click="decrypt(translate_decryptor)">Decrypt</button>
-            </ng:form>
-        </div>
-    </div>
-</div>
+<tabset>
+    <tab heading="Rotation">
+        <h4>Alphabetical Rotation</h4>
+        <ng:form id="rotate_decryptor">
+            <select name="rotate" ng:model="rotate_decryptor.key.rotate">
+              <option ng-repeat="i in range(1,26)" value="{{ i }}">
+                {{ i }} ({{ i - 26}})
+              </option>
+            </select><br>
+        </ng:form>
+        <button class="btn" ng-click="decrypt(rotate_decryptor)">Decrypt</button>
+    </tab>
+    <tab heading="Translate">
+        <h4>Alphabetical Translation</h4>
+        <ng:form id="translation_decryptor">
+            <table>
+                <tr>
+                  <td ng-repeat="letter in alphabet" style="padding-left:5px">{{letter}}</td>
+                </tr>
+                <tr>
+                    <td ng-repeat="letter in alphabet">
+                      <input type="text" name="{{letter}}" ng-model="translate_decryptor.key[letter]" maxlength="1" style="width:0.8em;padding-right:3px;margin:0px -2px">
+                    </td>
+                </tr>
+            </table>
+            <button class="btn" ng-click="decrypt(translate_decryptor)">Decrypt</button>
+        </ng:form>
+    </tab>
+</tabset>

@@ -1,29 +1,22 @@
 <h3>Analysis Tools</h3>
-<div class="tabbable"> <!-- Only required for left/right tabs -->
-    <ul class="nav nav-tabs" id="analysistabs">
-        <li class="active"><a href="#analysis_freq" showtab="">Frequency Analysis</a></li>
-        <li><a href="#analysis_common" showtab="">Common words</a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="analysis_freq">
-            <div class="row-fluid">
-                <div class="span6">
-                    <h4>English Letter Percentages</h4>
-                    <chartjs width="440" height="300" data="englishFreqChart.data" options="englishFreqChart.options" is-type="Bar"></chartjs>
-                </div>
-                <div class="span6">
-                    <h4>Encrypted Text Letter Counts</h4>
-                    <chartjs width="440" height="300" data="textFreqChart.data" options="textFreqChart.options" is-type="Bar"></chartjs>
-                </div>
+<tabset>
+    <tab heading="Frequency Analysis">
+        <div class="row-fluid">
+            <div class="span6">
+                <h4>English Letter Percentages</h4>
+                <chartjs width="440" height="300" data="englishFreqChart.data" options="englishFreqChart.options" is-type="Bar"></chartjs>
             </div>
-            <p></p>
+            <div class="span6">
+                <h4>Encrypted Text Letter Counts</h4>
+                <chartjs width="440" height="300" data="textFreqChart.data" options="textFreqChart.options" is-type="Bar"></chartjs>
+            </div>
         </div>
-        <div class="tab-pane" id="analysis_common">
-            <h4>List of most common words</h4>
-            <div class="row-fluid">
-                <div class="span6">
-                    <h4>English common words</h4>
-                    <pre>
+    </tab>
+    <tab heading="Common Words">
+        <div class="row-fluid">
+            <div class="span6">
+                <h4>English common words</h4>
+                <pre>
 the
 be
 to
@@ -65,14 +58,12 @@ there
 their
 what
 </pre>
-                </div>
-                <div class="span6">
-                    <h4>Encrypted Text common words</h4>
-                    <pre id="commonwords">
-                    </pre>
-                </div>
             </div>
-            <p></p>
+            <div class="span6">
+                <h4>Encrypted Text common words</h4>
+                <pre id="commonwords">
+                </pre>
+            </div>
         </div>
-    </div>
-</div>
+    </tab>
+</tabset>
