@@ -11,10 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
-  <!-- TODO: Use external boostrap instead of keeping our own copy -->
-  <link rel="stylesheet/less" href="/static/bootstrap/less/bootstrap.less">
-  <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-  <!-- end TODO -->
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link rel="StyleSheet" href="/static/styles.css" type="text/css" media="screen" />
   <link rel="stylesheet" href="css/app.css"/>
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
@@ -46,11 +43,6 @@
         </div>
       </div>
     </div>
-    <!--
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    -->
-    <script src="static/js/jquery-latest.js"></script>
-    <script src="static/bootstrap/js/bootstrap.min.js"></script>
     <div id="headerrow">
       <!-- CONTENT GOES HERE -->
       <div ng-view></div>
@@ -65,6 +57,8 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/2.2.2/js/bootstrap.min.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
