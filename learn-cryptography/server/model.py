@@ -3,17 +3,32 @@ from google.appengine.ext import ndb
 
 LEVEL_LIST = "default"
 
+class LevelType(object):
+    STANDARD_DECRYPT = 0
+    NEW_CIPHER_INRO = 1
+    UNKNOWN_CIPHER_CHALLENGE = 2 # Not implemented
+
 class Level(ndb.Model):
     """A single level in the game.
-    Contains intro and end story and an encrypted text which must be decrypted.
+    Contains an encrypted text which must be decrypted to pass.
     """
-    name = ndb.StringProperty()
-    startstory = ndb.TextProperty()
-    endstory = ndb.TextProperty()
+    # Level type (enum of LevelType)
+    level_type = ndb.IntegerProperty()
+
+    # Custom angular partial template for a custom level
+    # Must be a template in the client/partials directory.
+    custom_template = ndb.StringProperty()
     
-    text = ndb.KeyProperty() # text used for this level
-    unlock_decryptors = ndb.KeyProperty(repeated=True) # set of decryptor tools unlocked at this level
-    unlock_tools = ndb.KeyProperty(repeated=True) # set of analysis tools unlocked at this level
+    # Reference to the text used for this level (for normal decryption levels)
+    text = ndb.KeyProperty()
+    # TODO: In future, we should separate the text and the encryption method so
+    # we can randomly generate new challenges from a subset of ciphers.
+
+    # [unused] Set of decryptor tools unlocked at this level
+    unlock_decryptors = ndb.KeyProperty(repeated=True)
+
+    # [unused] Set of analysis tools unlocked at this level
+    unlock_tools = ndb.KeyProperty(repeated=True)
     unlock_levels = ndb.KeyProperty(repeated=True)
 
 
@@ -25,7 +40,6 @@ class LevelSequence(ndb.Model):
 
 class Text(ndb.Model):
     """A cipher text, stored encrypted and in plain text."""
-    name = ndb.StringProperty()
     content = ndb.TextProperty()
     encrypted = ndb.TextProperty()
 

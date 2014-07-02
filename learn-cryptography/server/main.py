@@ -57,7 +57,7 @@ class LevelDataHandler(BaseHandler):
         level_key = ndb.Key(urlsafe=urlstring)
         level = level_key.get()
         text = level.text.get()
-        values = {'key': level_key.urlsafe(), 'name': level.name}
+        values = {'key': level_key.urlsafe(), 'name': "Level name placeholder"}
         values['text'] = {'key': text.key.urlsafe(), 'encrypted': text.encrypted, 'cleartext': ''}
         values['next_level'] = self.getNextLevel(level.key)
         self.response.out.write(json.dumps(values))
@@ -80,7 +80,7 @@ class ProgressDataHandler(BaseHandler):
         userTracker = self.getUserTracker()
         levels = [
             {'key': level.key.urlsafe(),
-             'name': level.name,
+             'name': "Insert level name here",
              'status': status} for level,status in userTracker.getLevelList()]
         self.response.out.write(json.dumps(levels))
 
