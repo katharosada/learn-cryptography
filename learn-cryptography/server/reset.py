@@ -36,7 +36,6 @@ def resetText(text_id, decryptor_id, decryptor_key_json):
     text.content = open('texts/%s.txt' % text_id, 'rU').read()
     decryptor = {'id': decryptor_id, 'key':json.loads(decryptor_key_json)}
     text.encrypted = decrypt.decrypt(text.content, decryptor)
-###    text.encrypted = decrypt.getEncrypter(text_id)(text.content)
     text.put()
 
 
