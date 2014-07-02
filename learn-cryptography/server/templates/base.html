@@ -5,8 +5,7 @@
         <!--
         <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
         -->
-        <link rel="stylesheet/less" href="/static/bootstrap/less/bootstrap.less">
-        <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link rel="StyleSheet" href="/static/styles.css" type="text/css" media="screen" /> 
     </head>
     <body>
@@ -23,27 +22,11 @@
                         <div class="nav-collapse collapse">
                             <ul class="nav">
                                 <li class="active"><a href="/">Home</a></li>
-                                <li><a href="/progress">My Progress</a></li>
                             </ul>
                         </div><!--/.nav-collapse -->
-                        <div class="pull-right">
-                            <ul class="nav">
-                            {% if user %}
-                                <li><a href="{{ signout_link }}">Sign out</a></li>
-                            {% else %}
-                                <li><a href="{{ signin_link }}">Sign in</a></li>
-                            {% endif %}
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
-            <!--
-            <script src="http://code.jquery.com/jquery-latest.js"></script>
-            -->
-            <script src="static/js/jquery-latest.js"></script>
-            <script src="static/bootstrap/js/bootstrap.min.js"></script>
-            <script src="static/js/flot/jquery.flot.js"></script>
             <div id="headerrow">
                 {% block content %}
                     <h1>Content goes here</h1>
