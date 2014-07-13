@@ -47,7 +47,7 @@ class Text(ndb.Model):
 class UserState(ndb.Model):
     """All game-relevant information stored about a user.
     Currently just the completion/unlock state of levels."""
-    # Maybe we want to store more stuff here lated but for now it's just a
+    # Maybe we want to store more stuff here later but for now it's just a
     # holder for the per-user key.
     pass
 

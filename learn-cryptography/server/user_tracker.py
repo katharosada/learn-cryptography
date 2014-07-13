@@ -23,24 +23,31 @@ class UserTracker(object):
             if self.userState == None:
                 # User state does not exist, create default empty user state
                 self.userState = model.UserState(key=userKey)
-                self.userState.put()
 
+                # Get default level sequence
+                level_sequence = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
+                start_level_key = level_sequence.levels[0].id()
                 # Generate initial level state key with userid and level id
-                # TODO: Don't hard-code the starting level. bad bad bad.
-                userLevelState = model.UserLevelState(key=self.getLevelStateKey('caesar'))
+                userLevelState = model.UserLevelState(key=self.getLevelStateKey(start_level_key))
                 userLevelState.status = model.Status.UNLOCKED
+
+                # Put this at the end, so it's not created if something failed.
                 userLevelState.put()
+                self.userState.put()
 
     def getLevelList(self):
         "Returns a list of (level object, status) tuples for the levels that the user has completed."""
         levels = []
-        level_sequence = ndb.Key(model.LevelSequence, model.LEVEL_LIST)
-        for level_key in level_sequence.get().levels:
+        level_sequence = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
+        for level_key in level_sequence.levels:
             # Add whole level data to list
             level_state = self.getLevelStateKey(level_key.id()).get()
+            logging.info(level_key)
+            logging.info(level_sequence.levels[0])
             if level_state:
                 level = level_key.get()
                 levels.append((level, level_state.status))
+
         return levels
 
     def getLevelStateKey(self, level_id):
