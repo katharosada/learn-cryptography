@@ -57,7 +57,14 @@ class LevelDataHandler(BaseHandler):
         level_key = ndb.Key(urlsafe=urlstring)
         level = level_key.get()
         text = level.text.get()
-        values = {'key': level_key.urlsafe(), 'name': "Level name placeholder"}
+
+        level_sequence = level_key.parent().get()
+        values = {
+            'key': level_key.urlsafe(),
+            'name': level_sequence.name,
+            # Slow but probably not slow enough to warrant caring:
+            'place_in_sequence': level_sequence.levels.index(level_key) + 1,
+            'max_levels_in_sequence': len(level_sequence.levels)}
         values['text'] = {'key': text.key.urlsafe(), 'encrypted': text.encrypted, 'cleartext': ''}
         values['next_level'] = self.getNextLevel(level.key)
         self.response.out.write(json.dumps(values))
