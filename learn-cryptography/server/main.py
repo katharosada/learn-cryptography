@@ -71,7 +71,7 @@ class LevelDataHandler(BaseHandler):
 
     def getNextLevel(self, current):
         """Given a level id, look up the next level in the sequence."""
-        level_seq = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
+        level_seq = current.parent().get()
         l = level_seq.levels.index(current) + 1
         if l >= len(level_seq.levels):
             return None
