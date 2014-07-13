@@ -94,7 +94,7 @@ class UserTracker(object):
         """Mark this level as completed for this user, and unlock the next level(s)."""
         user_level_state = self._getOrCreateUserLevelState(level_key)
         # Don't allow completion of a locked level
-        if user_level_state.status not in [model.Status.COMPLETED, model.Status.LOCKED]:
+        if user_level_state.status not in [model.Status.LOCKED]:
             user_level_state.status = model.Status.COMPLETED
             user_level_state.put()
 
@@ -106,4 +106,18 @@ class UserTracker(object):
                     level_state.status = model.Status.UNLOCKED
                     level_state.put()
 
+            # Check if the sequence is finished, if so, unlock the next one.
+            level_sequence = level_key.parent().get()
+            finished = True
+            for level_key in level_sequence.levels:
+                if self._getOrCreateUserLevelState(level_key).status != model.Status.COMPLETED:
+                    finished = False
+                    break
+            if finished:
+                # Unlock the next level sequence
+                for sequence_key in level_sequence.unlock_sequences:
+                    # Unlock the first level of each sequence
+                    level_state = self._getOrCreateUserLevelState(sequence_key.get().levels[0])
+                    level_state.status = model.Status.UNLOCKED
+                    level_state.put()
 

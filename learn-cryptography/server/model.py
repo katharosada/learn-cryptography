@@ -37,6 +37,7 @@ class LevelSequence(ndb.Model):
     """One set of levels which are part of a theme or in a sequence."""
     name = ndb.StringProperty()
     levels = ndb.KeyProperty(repeated=True)
+    unlock_sequences = ndb.KeyProperty(repeated=True)
 
     @classmethod
     def getAll(cls):

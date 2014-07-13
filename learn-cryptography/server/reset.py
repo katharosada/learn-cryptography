@@ -49,18 +49,21 @@ def appendToLevelSequence(level_sequence, level_id_list):
           level_sequence.levels.append(level_key)
           level_sequence.put()
 
-def resetLevelSequence(level_sequence_id, name):
+def resetLevelSequence(level_sequence_id, name, unlock_sequence_ids):
     level_sequence_key = ndb.Key(model.LevelSequence, level_sequence_id)
     level_sequence = level_sequence_key.get()
     if not level_sequence:
         # Create level list with level 1
         level_sequence = model.LevelSequence(key=level_sequence_key)
     level_sequence.name = name
+    level_sequence.unlock_sequences = []
+    for sequence_id in unlock_sequence_ids:
+        level_sequence.unlock_sequences.append(ndb.Key(model.LevelSequence, sequence_id))
     level_sequence.put()
     return level_sequence
 
 def resetAllTheThings():
-    caesar_sequence = resetLevelSequence(model.LEVEL_LIST, 'Caesar Ciphers')
+    caesar_sequence = resetLevelSequence(model.LEVEL_LIST, 'Caesar Ciphers', ['substitution'])
 
     # Level 1 - Caesar Cipher
     resetText('caesar1', 'rotate', '{"rotate": "3"}')
@@ -72,12 +75,12 @@ def resetAllTheThings():
 
     # Caesar cipher 3 (rotate -5)
     resetText('caesar3', 'rotate', '{"rotate": "21"}')
-    resetStandardDecryptLevel(caesar_sequence.key, 'caesar3', 'caesar3', ['translation1'])
+    resetStandardDecryptLevel(caesar_sequence.key, 'caesar3', 'caesar3', [])
 
     appendToLevelSequence(caesar_sequence, ['caesar1', 'caesar2', 'caesar3'])
 
     # Substitution/Translation ciphers sequence
-    translation_sequence = resetLevelSequence('substitution', "Substitution Ciphers")
+    translation_sequence = resetLevelSequence('substitution', "Substitution Ciphers", [])
 
     def alephmap(newaleph):
       result = {}
