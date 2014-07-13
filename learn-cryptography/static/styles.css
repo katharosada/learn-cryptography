@@ -24,15 +24,33 @@ levelset {
 }
 
 level {
-    display: inline-block;
-    background-color: #99AACB;
+    display: inline-table;
+    background-color: #C2D6FC;
     width: 6em;
+    height: 4.3em;
     padding: 1em;
+    margin-right: 10px;
     text-align: center;
     -moz-border-radius: 12px;
     -webkit-border-radius: 12px;
     -khtml-border-radius: 12px;
     border-radius: 12px;
+}
+level. a {
+  color: #416DC2;
+}
+
+level.locked {
+  background-color: #EEE;
+}
+
+level.completed a {
+  color: #C2D6FC;
+}
+
+level.completed {
+  background-color: #416DC2;
+  color: #C2D6FC;
 }
 
 

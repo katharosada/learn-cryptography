@@ -84,12 +84,9 @@ class ProgressDataHandler(BaseHandler):
     REQUIRE_SIGN_IN = True
 
     def get(self):
-        userTracker = self.getUserTracker()
-        levels = [
-            {'key': level.key.urlsafe(),
-             'name': "Insert level name here",
-             'status': status} for level,status in userTracker.getLevelList()]
-        self.response.out.write(json.dumps(levels))
+        user_tracker = self.getUserTracker()
+        level_sequence_data = user_tracker.getLevelSequencesData()
+        self.response.out.write(json.dumps(level_sequence_data))
 
 
 class DecryptDataHandler(BaseHandler):

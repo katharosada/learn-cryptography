@@ -35,18 +35,29 @@ class UserTracker(object):
                 user_level_state.put()
                 self.userState.put()
 
-    def getLevelList(self):
+    def getLevelSequencesData(self):
         "Returns a list of (level object, status) tuples for the levels that the user has completed."""
-        levels = []
-        level_sequence = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
-        for level_key in level_sequence.levels:
-            # Add whole level data to list
-            level_state = self._getLevelStateKey(level_key).get()
-            if level_state:
+        level_sequences = model.LevelSequence.getAll()
+        level_sequences_data = []
+        for level_sequence in level_sequences:
+            sequence_data = {
+                'name': level_sequence.name,
+                'levels': [],
+            }
+            for level_key in level_sequence.levels:
+                # Add whole level data to list
+                level_state = self._getLevelStateKey(level_key).get()
                 level = level_key.get()
-                levels.append((level, level_state.status))
-
-        return levels
+                level_data = {
+                    'key': level_key.urlsafe(),
+                    'level_type': level.level_type,
+                    'status': model.Status.LOCKED,
+                }
+                if level_state:
+                    level_data['status'] = level_state.status
+                sequence_data['levels'].append(level_data)
+            level_sequences_data.append(sequence_data)
+        return level_sequences_data
 
     def _getOrCreateUserLevelState(self, level_key):
         level_sequence_state_key = self._getLevelSequenceStateKey(level_key.parent())

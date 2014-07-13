@@ -1,10 +1,15 @@
 
 <div class="container">
     <h2>Progress</h2>
-        <levelset>
-            <level ng-repeat="level in levels">
-              <a href="/#/level/{{ level.key }}">{{ level.name }} {{ level.status }}</a>
+        <levelset ng-repeat="sequence in level_sequences" >
+            <h3>{{ sequence.name }}</h3>
+            <level ng-repeat="level in sequence.levels" ng-class="{completed: level.status == 3, locked: level.status == 0}">
+            <a ng-show="level.status != 0" href="/#/level/{{ level.key }}">
+              Decryption Challenge
+            </a><span ng-show="level.status == 3">(Completed)</span>
+            <span ng-show="level.status == 0">Decryption Challenge (locked)</span>
             </level>
         </levelset>
+        <p></p>
 </div> <!-- /container -->
 

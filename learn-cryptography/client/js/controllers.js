@@ -74,7 +74,7 @@ angular.module('cryptoApp.controllers', [])
   .controller('ProgressController', ['$scope', '$http', function($scope, $http) {
     $http.get('/progress_data').success(
       function(data) {
-        $scope.levels = data;
+        $scope.level_sequences = data;
       });
   }])
   .controller('LevelController', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {

@@ -1,6 +1,7 @@
 
 from google.appengine.ext import ndb
 
+# The id of the LevelSequence to start on.
 LEVEL_LIST = "default"
 
 class LevelType(object):
@@ -36,6 +37,10 @@ class LevelSequence(ndb.Model):
     """One set of levels which are part of a theme or in a sequence."""
     name = ndb.StringProperty()
     levels = ndb.KeyProperty(repeated=True)
+
+    @classmethod
+    def getAll(cls):
+        return cls.query().fetch()
 
 
 class Text(ndb.Model):
