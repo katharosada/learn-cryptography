@@ -9,21 +9,14 @@
         <p>You have (presumably) successfully reset the database. Congratulations.</p>
         <h3>Level list</h3>
         <p>{{ level_list }}</p>
-        <h3>Levels deleted</h3>
-        <ul>
-            {% for level in levels %}
-            <li>{{ level }}</li>
-            {% endfor %}
-        </ul>
-
-        <h3>New levels</h3>
-        <ul>
-            {% for result in results %}
-            <li>{{ result }} has key {{ results[result] }}</li >
-            {% endfor %}
-        </ul>
-
     </div>
+
+    <h3>Level details:</h3>
+    <ul>
+    {% for level in level_data %}
+      <li>{{ level }}</li>
+    {% endfor %}
+  </ul>
 
 </div> <!-- /container -->
 
