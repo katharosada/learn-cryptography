@@ -26,13 +26,13 @@ class UserTracker(object):
 
                 # Get default level sequence
                 level_sequence = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
-                start_level_key = level_sequence.levels[0].id()
+                start_level_key = level_sequence.levels[0]
                 # Generate initial level state key with userid and level id
-                userLevelState = model.UserLevelState(key=self.getLevelStateKey(start_level_key))
-                userLevelState.status = model.Status.UNLOCKED
+                user_level_state = self._getOrCreateUserLevelState(start_level_key)
+                user_level_state.status = model.Status.UNLOCKED
 
                 # Put this at the end, so it's not created if something failed.
-                userLevelState.put()
+                user_level_state.put()
                 self.userState.put()
 
     def getLevelList(self):
@@ -41,41 +41,58 @@ class UserTracker(object):
         level_sequence = ndb.Key(model.LevelSequence, model.LEVEL_LIST).get()
         for level_key in level_sequence.levels:
             # Add whole level data to list
-            level_state = self.getLevelStateKey(level_key.id()).get()
-            logging.info(level_key)
-            logging.info(level_sequence.levels[0])
+            level_state = self._getLevelStateKey(level_key).get()
             if level_state:
                 level = level_key.get()
                 levels.append((level, level_state.status))
 
         return levels
 
-    def getLevelStateKey(self, level_id):
-        level_state_key = ndb.Key(pairs=self.userState.key.pairs()+((model.UserLevelState, level_id),))
+    def _getOrCreateUserLevelState(self, level_key):
+        level_sequence_state_key = self._getLevelSequenceStateKey(level_key.parent())
+        if not level_sequence_state_key.get():
+            level_sequence_state = model.UserLevelSequenceState(key=level_sequence_state_key)
+            # New level sequences are unlocked by default
+            level_sequence_state.status = model.Status.UNLOCKED
+            level_sequence_state.put()
+        level_state_key = self._getLevelStateKey(level_key)
+        level_state = level_state_key.get()
+        if not level_state:
+            level_state = model.UserLevelState(key=level_state_key)
+            # New level is locked by default
+            level_state.status = model.Status.LOCKED
+            level_state.put()
+        return level_state
+
+    def _getLevelSequenceStateKey(self, level_sequence_key):
+        level_sequence_state_key = ndb.Key(pairs=
+            self.userState.key.pairs() +
+            ((model.UserLevelSequenceState, level_sequence_key.id()),))
+        return level_sequence_state_key
+
+    def _getLevelStateKey(self, level_key):
+        # The level state key is define as such:
+        # (UserState, user_state_id, UserLevelSequenceState, level_seq_id, UserLevelState, level_id)
+        level_state_key = ndb.Key(pairs=
+            self.userState.key.pairs() +
+            ((model.UserLevelSequenceState, level_key.parent().id()),
+             (model.UserLevelState, level_key.id())))
         return level_state_key
     
     def recordWin(self, level_key):
-        """Save the level id in the list of completed levels for this user."""
-        levelStateKey = self.getLevelStateKey(level_key.id())
+        """Mark this level as completed for this user, and unlock the next level(s)."""
+        user_level_state = self._getOrCreateUserLevelState(level_key)
+        # Don't allow completion of a locked level
+        if user_level_state.status not in [model.Status.COMPLETED, model.Status.LOCKED]:
+            user_level_state.status = model.Status.COMPLETED
+            user_level_state.put()
 
-        # Find existing UserLevelState (should either be already completed or at least unlocked)
-        userLevelState = levelStateKey.get()
-        if userLevelState == None:
-            # TODO: Once we add locked/unlocked state a check here that the user didn't just solve a locked level 
-            logging.warning("User just solved a level which had no exisitng unlock state.")
-            userLevelState = model.UserLevelState(key=levelStateKey)
-        # The state already exists, just update the status to completed.
-        userLevelState.status = model.Status.COMPLETED
-        userLevelState.put()
-
-        # Unlock all the linked levels
-        for unlock_level_key in level_key.get().unlock_levels:
-            level_state_key = self.getLevelStateKey(unlock_level_key.id())
-            level_state = level_state_key.get()
-            if not level_state:
-                level_state = model.UserLevelState(key=level_state_key)
-            if level_state.status not in [model.Status.COMPLETED]:
-                level_state.status = model.Status.UNLOCKED
-                level_state.put()
+            # Unlock all the linked levels
+            for unlock_level_key in level_key.get().unlock_levels:
+                level_state = self._getOrCreateUserLevelState(unlock_level_key)
+                # Don't accidently un-complete a level
+                if level_state.status not in [model.Status.COMPLETED]:
+                    level_state.status = model.Status.UNLOCKED
+                    level_state.put()
 
 

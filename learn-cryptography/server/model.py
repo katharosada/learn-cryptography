@@ -58,6 +58,10 @@ class Status(object):
     UNLOCKED = 1
     COMPLETED = 3
 
+class UserLevelSequenceState(ndb.Model):
+    """One user's current state for the levelSequence."""
+    # Enum for current state defined by Status class
+    status = ndb.IntegerProperty()
 
 class UserLevelState(ndb.Model):
     """One user's current state for one level.

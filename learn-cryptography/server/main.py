@@ -91,6 +91,7 @@ class DecryptDataHandler(BaseHandler):
         data = json.loads(payload)
         text = ndb.Key(urlsafe=data['text_key']).get()
         level_key = ndb.Key(urlsafe=data['level_key'])
+
         # TODO verify input (text must exist, decryptor valid etc.)
         
         decrypted = decrypt.decrypt(text.encrypted, data['decryptor']);

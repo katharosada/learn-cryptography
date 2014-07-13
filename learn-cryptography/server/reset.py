@@ -31,12 +31,14 @@ def resetText(text_id, decryptor_id, decryptor_key_json):
     text.put()
 
 
-def resetLevel(level_sequence_key, level_id, text_id, unlock_list):
+def resetStandardDecryptLevel(level_sequence_key, level_id, text_id, unlock_list):
     level_key = ndb.Key(model.LevelSequence, level_sequence_key.id(), model.Level, level_id)
 
     level = getOrCreateLevel(level_key)
+    level.level_type = model.LevelType.STANDARD_DECRYPT
     level.text = ndb.Key(model.Text, text_id)
-    level.unlock_levels = [ndb.Key(model.Level, id) for id in unlock_list]
+    level.unlock_levels = [
+        ndb.Key(model.LevelSequence, level_sequence_key.id(), model.Level, id) for id in unlock_list]
     key = level.put()
     return level
 
@@ -58,15 +60,15 @@ def resetAllTheThings():
 
     # Level 1 - Caesar Cipher
     resetText('caesar1', 'rotate', '{"rotate": "3"}')
-    resetLevel(level_sequence_key, 'caesar1', 'caesar1', ['caesar2'])
+    resetStandardDecryptLevel(level_sequence_key, 'caesar1', 'caesar1', ['caesar2'])
 
     # Caesar cipher 2 (ROT 13)
     resetText('caesar2', 'rotate', '{"rotate": "13"}')
-    resetLevel(level_sequence_key, 'caesar2', 'caesar2', ['caesar3'])
+    resetStandardDecryptLevel(level_sequence_key, 'caesar2', 'caesar2', ['caesar3'])
 
     # Caesar cipher 3 (rotate -5)
     resetText('caesar3', 'rotate', '{"rotate": "21"}')
-    resetLevel(level_sequence_key, 'caesar3', 'caesar3', ['translation1'])
+    resetStandardDecryptLevel(level_sequence_key, 'caesar3', 'caesar3', ['translation1'])
 
     appendToLevelSequence(level_sequence, ['caesar1', 'caesar2', 'caesar3'])
 
@@ -79,15 +81,15 @@ def resetAllTheThings():
 
     # Backwards alphabet translation
     resetText('translation1', 'translate', alephmap('zyxwvutsrqponmlkjihgfedcba'))
-    resetLevel(level_sequence_key, 'translation1', 'translation1', ['translation2'])
+    resetStandardDecryptLevel(level_sequence_key, 'translation1', 'translation1', ['translation2'])
 
     # Translation Cipher 2: Vowels and constonants shifted separately
     resetText('translation2', 'translate', alephmap('ecdfighjoklmnpuqrstvawxyzb'))
-    resetLevel(level_sequence_key, 'translation2', 'translation2', ['translation3'])
+    resetStandardDecryptLevel(level_sequence_key, 'translation2', 'translation2', ['translation3'])
 
     # Translation Cipher 2: Scrambled alphabet
     resetText('translation3', 'translate', alephmap('kgxmqblwrjnydshzatoeuifpvc'))
-    resetLevel(level_sequence_key, 'translation3', 'translation3', [])
+    resetStandardDecryptLevel(level_sequence_key, 'translation3', 'translation3', [])
 
     appendToLevelSequence(level_sequence, ['translation1', 'translation2', 'translation3'])
 
