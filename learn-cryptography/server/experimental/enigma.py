@@ -44,6 +44,7 @@ REFLECTOR_C_WIRING = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
 ALPH = string.uppercase
 
 class Enigma(object):
+    """A generic implementation of a WWII Enigma machine."""
     def __init__(self, rotor_list, reflector, steckers=None):
         self.rotor_list = [copy.deepcopy(r) for r in rotor_list]
         self.reflector = copy.deepcopy(reflector)
@@ -52,33 +53,47 @@ class Enigma(object):
             self.setSteckers(steckers)
 
     def setSteckers(self, steckers):
+        """Set the pairs of stecker plugs.
+        Takes a list of pairs of letters, representing which letter should be
+        swapped (plugged together) with which other letter."
+        """
         for pair in steckers:
             pair = pair.upper()
             self.steckers[pair[0]] = pair[1]
             self.steckers[pair[1]] = pair[0]
 
     def setRotorPositions(self, positions):
+        """Set the positions of the rotors.
+        The length of the positions string must match the number of rotors in
+        this Enigma. The postions should be given as a string  where
+        each characters is the letter that is visible at the top of the rotor
+        in the desired position."""
         assert len(positions) == len(self.rotor_list)
         positions = positions.upper()
         for ch, disk in zip(positions, self.rotor_list):
             disk.setRotation(ch)
 
     def setRingStellung(self, stellung):
+        """Set the Ringstellung for each rotor.
+        The Ringstellung only controls the rotation between the visible
+        letters and the mechanism of the rotor, which includes the internal
+        wiring and the notch which triggers the rotation of the rotor. This
+        function expects a string of the characters representing the rotation,
+        if you see the Ringstellung as numbers, 1=A, 2=B and so on."""
         assert len(stellung) == len(self.rotor_list)
         stellung = stellung.upper()
         for ch, disk in zip(stellung, self.rotor_list):
             disk.setRingStellung(ch)
         
-
-    def stecker(self, ch):
+    def _stecker(self, ch):
         ch = ch.upper()
         if ch in self.steckers:
             return self.steckers[ch]
         return ch
 
-    def typeChar(self, ch):
+    def _typeChar(self, ch):
     
-        ch = self.stecker(ch)
+        ch = self._stecker(ch)
 
         # Rotate the rotors
         # Note that due to double-stepping, the middle rotor (position 1) will
@@ -106,23 +121,26 @@ class Enigma(object):
 
         for d in self.rotor_list:
             ch = d.reverseCrypt(ch)
-        return self.stecker(ch)
+        return self._stecker(ch)
 
     def type(self, inp):
         letters = []
         for ch in inp.strip():
             if ch.isalpha():
-              letters.append(self.typeChar(ch))
-###            else:
-###              letters.append(ch)
+              letters.append(self._typeChar(ch))
         return "".join(letters)
 
     def printWindows(self):
+        """Returns a string, showing the current face up ring positions for
+        each rotor."""
         windows = [disk.window() for disk in self.rotor_list]
         return "Windows: " + str(windows)
 
 
 class Rotor(object):
+    """A single rotor for an Enigma machine. 
+    Stores its own state for its current ringstellung and rotation."""
+
     def __init__(self, rotor_wiring, notch=""):
         self.wiring = rotor_wiring
         self.mapping = {}
@@ -132,6 +150,7 @@ class Rotor(object):
         self.setRingStellung('A')
 
     def setRingStellung(self, ringPos):
+        """Set the Ringstellung for this rotor."""
         ringPos = ALPH.index(ringPos.upper())
         self.ringStellung = ringPos
         for i, ch in enumerate(ALPH):
@@ -139,16 +158,25 @@ class Rotor(object):
             self.reverse_mapping[self.wiring[i]] = ch
 
     def setRotation(self, ch):
+        """Set the number of steps that this has been rotated from the 'A'
+        position."""
 ###        self.rotation = (ALPH.index(ch) - self.ringStellung + 26) % 26
         self.rotation = ALPH.index(ch)
 
     def window(self):
+        """The current letter facing up on the rotor.
+        This is effectively the Alpha representation of the rotation of the
+        Rotor from 'A'."""
         return ALPH[self.rotation]
 
     def rotate(self):
+        """Rotate the rotor 1 step."""
         self.rotation = (self.rotation + 1) % 26
 
     def isNotchOpen(self):
+        """True if the rotation of this rotor is such that the notch is open
+        causing the next rotor to rotate. Note that some rotors have multiple
+        notches or none."""
         if ALPH[self.rotation] in self.notch:
             return True
         return False
@@ -166,6 +194,8 @@ class Rotor(object):
         return letter
 
     def crypt(self, ch):
+        """Resolve the transformation of the current coming right-to-left
+        through this rotor."""
         # get rotated letter
         letter = self._getRotated(ch)
         res = self.mapping[letter]
@@ -173,14 +203,12 @@ class Rotor(object):
         return self._getUnRotated(res)
 
     def reverseCrypt(self, ch):
+        """Resolve the transformation of the current coming left-to-right
+        through this rotor."""
         letter = self._getRotated(ch)
         res = self.reverse_mapping[letter]
         return self._getUnRotated(res)
 
-def test():
-    disk = Rotor(ROTOR_I_WIRING, ROTOR_I_NOTCH)
-    res = disk.crypt("e")
-    print res
 
 ROTOR_I = Rotor(ROTOR_I_WIRING, ROTOR_I_NOTCH)
 ROTOR_II = Rotor(ROTOR_II_WIRING, ROTOR_II_NOTCH)
