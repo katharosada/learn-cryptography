@@ -1,5 +1,6 @@
 
 import string
+import copy
 
 
 # Enigma I rotors:
@@ -42,27 +43,30 @@ REFLECTOR_C_WIRING = "FVPJIAOYEDRZXWGCTKUQSBNMHL"
 
 ALPH = string.uppercase
 
-class DiskSlots(object):
-    def __init__(self, disk_list, reflector, steckers):
-        self.disk_list = disk_list
-        self.reflector = reflector
+class Enigma(object):
+    def __init__(self, rotor_list, reflector, steckers=None):
+        self.rotor_list = [copy.deepcopy(r) for r in rotor_list]
+        self.reflector = copy.deepcopy(reflector)
         self.steckers = {}
+        if steckers is not None:
+            self.setSteckers(steckers)
+
+    def setSteckers(self, steckers):
         for pair in steckers:
             pair = pair.upper()
             self.steckers[pair[0]] = pair[1]
             self.steckers[pair[1]] = pair[0]
-###            print "Adding stecker pair: (%s, %s)" % (pair[0], pair[1])
 
     def setRotorPositions(self, positions):
-        assert len(positions) == len(self.disk_list)
+        assert len(positions) == len(self.rotor_list)
         positions = positions.upper()
-        for ch, disk in zip(positions, self.disk_list):
+        for ch, disk in zip(positions, self.rotor_list):
             disk.setRotation(ch)
 
     def setRingStellung(self, stellung):
-        assert len(stellung) == len(self.disk_list)
+        assert len(stellung) == len(self.rotor_list)
         stellung = stellung.upper()
-        for ch, disk in zip(stellung, self.disk_list):
+        for ch, disk in zip(stellung, self.rotor_list):
             disk.setRingStellung(ch)
         
 
@@ -72,7 +76,7 @@ class DiskSlots(object):
             return self.steckers[ch]
         return ch
 
-    def type(self, ch):
+    def typeChar(self, ch):
     
         ch = self.stecker(ch)
 
@@ -81,36 +85,44 @@ class DiskSlots(object):
         # always turn whenever the leftmost (position 0) turns.
         rotate_1 = False
         rotate_0 = False
-        if self.disk_list[2].isNotchOpen():
+        if self.rotor_list[-1].isNotchOpen():
             rotate_1 = True
-        if self.disk_list[1].isNotchOpen():
+        if self.rotor_list[-2].isNotchOpen():
             rotate_0 = True
             rotate_1 = True
 
-        self.disk_list[2].rotate()
+        self.rotor_list[-1].rotate()
         if rotate_1:
-            self.disk_list[1].rotate()
+            self.rotor_list[-2].rotate()
         if rotate_0:
-            self.disk_list[0].rotate()
+            self.rotor_list[-3].rotate()
 
         # Encrypt the letter
         ch = ch.upper()
-        for d in self.disk_list[::-1]:
+        for d in self.rotor_list[::-1]:
             ch = d.crypt(ch)
 
         ch = self.reflector.crypt(ch)
 
-        for d in self.disk_list:
+        for d in self.rotor_list:
             ch = d.reverseCrypt(ch)
         return self.stecker(ch)
 
+    def type(self, inp):
+        letters = []
+        for ch in inp.strip():
+            if ch.isalpha():
+              letters.append(self.typeChar(ch))
+###            else:
+###              letters.append(ch)
+        return "".join(letters)
+
     def printWindows(self):
-        windows = [disk.window() for disk in self.disk_list]
+        windows = [disk.window() for disk in self.rotor_list]
         return "Windows: " + str(windows)
-           
 
 
-class Disk(object):
+class Rotor(object):
     def __init__(self, rotor_wiring, notch=""):
         self.wiring = rotor_wiring
         self.mapping = {}
@@ -166,26 +178,26 @@ class Disk(object):
         return self._getUnRotated(res)
 
 def test():
-    disk = Disk(ROTOR_I_WIRING, ROTOR_I_NOTCH)
+    disk = Rotor(ROTOR_I_WIRING, ROTOR_I_NOTCH)
     res = disk.crypt("e")
     print res
 
-ROTOR_I = Disk(ROTOR_I_WIRING, ROTOR_I_NOTCH)
-ROTOR_II = Disk(ROTOR_II_WIRING, ROTOR_II_NOTCH)
-ROTOR_III = Disk(ROTOR_III_WIRING, ROTOR_III_NOTCH)
-ROTOR_IV = Disk(ROTOR_IV_WIRING, ROTOR_IV_NOTCH)
-ROTOR_V = Disk(ROTOR_V_WIRING, ROTOR_V_NOTCH)
-REFLECTOR_A = Disk(REFLECTOR_A_WIRING)
-REFLECTOR_B = Disk(REFLECTOR_B_WIRING)
-REFLECTOR_C = Disk(REFLECTOR_C_WIRING)
+ROTOR_I = Rotor(ROTOR_I_WIRING, ROTOR_I_NOTCH)
+ROTOR_II = Rotor(ROTOR_II_WIRING, ROTOR_II_NOTCH)
+ROTOR_III = Rotor(ROTOR_III_WIRING, ROTOR_III_NOTCH)
+ROTOR_IV = Rotor(ROTOR_IV_WIRING, ROTOR_IV_NOTCH)
+ROTOR_V = Rotor(ROTOR_V_WIRING, ROTOR_V_NOTCH)
+REFLECTOR_A = Rotor(REFLECTOR_A_WIRING)
+REFLECTOR_B = Rotor(REFLECTOR_B_WIRING)
+REFLECTOR_C = Rotor(REFLECTOR_C_WIRING)
 
-ROTOR_VI = Disk(ROTOR_VI_WIRING, ROTOR_VI_NOTCH)
-ROTOR_VII = Disk(ROTOR_VII_WIRING, ROTOR_VII_NOTCH)
-ROTOR_VIII = Disk(ROTOR_VIII_WIRING, ROTOR_VIII_NOTCH)
-ROTOR_BETA = Disk(ROTOR_BETA_WIRING) # No notch
-ROTOR_GAMMA = Disk(ROTOR_GAMMA_WIRING) # No notch
-REFLECTOR_UKW_B = Disk(REFLECTOR_UKW_B_WIRING)
-REFLECTOR_UKW_C = Disk(REFLECTOR_UKW_C_WIRING)
+ROTOR_VI = Rotor(ROTOR_VI_WIRING, ROTOR_VI_NOTCH)
+ROTOR_VII = Rotor(ROTOR_VII_WIRING, ROTOR_VII_NOTCH)
+ROTOR_VIII = Rotor(ROTOR_VIII_WIRING, ROTOR_VIII_NOTCH)
+ROTOR_BETA = Rotor(ROTOR_BETA_WIRING) # No notch
+ROTOR_GAMMA = Rotor(ROTOR_GAMMA_WIRING) # No notch
+REFLECTOR_UKW_B = Rotor(REFLECTOR_UKW_B_WIRING)
+REFLECTOR_UKW_C = Rotor(REFLECTOR_UKW_C_WIRING)
 
 
 
@@ -196,19 +208,21 @@ if __name__ == "__main__":
     if stecks == "":
         stecks = DEFAULT_STECKS
     stecks = stecks.split()
-###    TEST_SETUP = DiskSlots([ROTOR_I, ROTOR_II, ROTOR_III], REFLECTOR_B, stecks)
-###    TEST_SETUP = DiskSlots([ROTOR_IV, ROTOR_III, ROTOR_II], REFLECTOR_B, stecks)
-###    TEST_SETUP = DiskSlots([ROTOR_III, ROTOR_II, ROTOR_I], REFLECTOR_B, stecks)
+###    TEST_SETUP = Enigma([ROTOR_I, ROTOR_II, ROTOR_III], REFLECTOR_B, stecks)
+###    TEST_SETUP = Enigma([ROTOR_IV, ROTOR_III, ROTOR_II], REFLECTOR_B, stecks)
+###    TEST_SETUP = Enigma([ROTOR_III, ROTOR_II, ROTOR_I], REFLECTOR_B, stecks)
     # M4 example setup:
-###    TEST_SETUP = DiskSlots([ROTOR_VIII, ROTOR_II, ROTOR_IV], REFLECTOR_B, stecks)
+###    TEST_SETUP = Enigma([ROTOR_VIII, ROTOR_II, ROTOR_IV], REFLECTOR_B, stecks)
 
-    TEST_SETUP = DiskSlots([ROTOR_III, ROTOR_V, ROTOR_I], REFLECTOR_B, stecks)
+    TEST_SETUP = Enigma([ROTOR_II, ROTOR_I, ROTOR_III], REFLECTOR_A, stecks)
+
 
     # A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
     # 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6
     # A = 1, Z = 26
     # 19   7   12
     #  S   G    L
+    # XMV
 
     # (Spruchschlussel)
     # WTG - PLT
