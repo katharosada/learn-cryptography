@@ -3,6 +3,8 @@
 # Angular/node build results
 node_modules/
 learn-cryptography/client/bower_components/
+learn-cryptography/genfiles
+bower_components
 tmp
 
 # C extensions
